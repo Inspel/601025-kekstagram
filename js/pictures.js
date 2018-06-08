@@ -21,9 +21,9 @@ var getRndProperty = function (arr) {
 var generateComments = function (quantity) {
   var comments = [];
   for (var i = 0; i < quantity; i++) {
-    var newcomment = getRndProperty(COMMENTS_POOL);
+    var newComment = getRndProperty(COMMENTS_POOL);
 
-    comments.push(newcomment);
+    comments.push(newComment);
   }
   return comments
 };
@@ -42,10 +42,6 @@ var generatePicturesArray = function (quantity) {
   return pictures;
 };
 
-// generatePicturesArray(picturesQuantity);
-//
-// console.log(pictures[2].comments.length.toString());
-
 var createSimilarElements = function (templateQueryString, contentQueryString, elementsQuantity) {
 
 var template = document.querySelector(templateQueryString)
@@ -62,8 +58,8 @@ var template = document.querySelector(templateQueryString)
     commentsQuantityString = pictures[i].comments.length.toString();
 
     pictureElement.querySelector('.picture__img').src = pictures[i].url;
-    pictureElement.querySelector('.picture__stat picture__stat--comments').textContent = commentsQuantityString;
-    pictureElement.querySelector('.picture__stat picture__stat--likes').textContent = pictures[i].likes;
+    pictureElement.querySelector('.picture__stat--comments').textContent = commentsQuantityString;
+    pictureElement.querySelector('.picture__stat--likes').textContent = pictures[i].likes;
 
     fragment.appendChild(pictureElement);
   }
@@ -72,10 +68,19 @@ var template = document.querySelector(templateQueryString)
 
 generatePicturesArray(picturesQuantity);
 
-console.log(pictures);
+var similarListElement = document.querySelector('.pictures');
 
 var newFragment = createSimilarElements('#picture', '.picture__link', picturesQuantity);
 
-var similarListElement = document.querySelector('.pictures');
-
 similarListElement.appendChild(newFragment);
+
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+
+var bigPictureImg = document.querySelector('big-picture__img')
+  .content
+  .getElementsByTagName('img');
+
+bigPictureImg.src = pictures[0].url;
+
+
