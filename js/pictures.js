@@ -26,7 +26,7 @@ var generateComments = function (quantity) {
 
     comments.push(newComment);
   }
-  return comments
+  return comments;
 };
 
 var generatePicturesArray = function (quantity) {
@@ -74,7 +74,7 @@ var insertTemplateContent = function (templateNode, nodeQueryString) {
 
 var clearNodeContent = function (nodeToClear) {
   while (nodeToClear.firstChild) {
-    nodeToClear.removeChild(nodeToClear.firstChild)
+    nodeToClear.removeChild(nodeToClear.firstChild);
   }
 };
 
