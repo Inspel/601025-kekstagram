@@ -6,6 +6,7 @@ var DESCRIPTIONS_POOL = ['Тестим новую камеру!', 'Затуси�
 
 var pictures = [];
 var picturesQuantity = 25;
+var pictureTemplate = document.querySelector('#picture');
 
 var getRandomInteger = function (min, max) {
   var random = min + Math.random() * (max + 1 - min);
@@ -42,23 +43,22 @@ var generatePicturesArray = function (quantity) {
   return pictures;
 };
 
-var createSimilarElements = function (templateQueryString, contentQueryString, elementsQuantity) {
+var getCommentsQuantity = function (arr, index) {
+  var pictureComments = arr[index].comments;
+  return pictureComments.length.toString();
+};
 
-var template = document.querySelector(templateQueryString)
-  .content
-  .querySelector(contentQueryString);
-
+var createSimilarPicturesFragment = function (templateNode, contentQueryString, elementsQuantity) {
+  var template = templateNode
+    .content
+    .querySelector(contentQueryString);
   var fragment = document.createDocumentFragment();
-
-  var commentsQuantityString;
 
   for (var i = 0; i < elementsQuantity; i++) {
     var pictureElement = template.cloneNode(true);
 
-    commentsQuantityString = pictures[i].comments.length.toString();
-
     pictureElement.querySelector('.picture__img').src = pictures[i].url;
-    pictureElement.querySelector('.picture__stat--comments').textContent = commentsQuantityString;
+    pictureElement.querySelector('.picture__stat--comments').textContent = getCommentsQuantity(pictures, i);
     pictureElement.querySelector('.picture__stat--likes').textContent = pictures[i].likes;
 
     fragment.appendChild(pictureElement);
@@ -66,21 +66,59 @@ var template = document.querySelector(templateQueryString)
   return fragment;
 };
 
+var insertTemplateContent = function (templateNode, nodeQueryString) {
+  var template = templateNode;
+  var exampleNode = document.querySelector(nodeQueryString);
+  template.appendChild(exampleNode);
+};
+
+var clearNodeContent = function (nodeToClear) {
+  while (nodeToClear.firstChild) {
+    nodeToClear.removeChild(nodeToClear.firstChild)
+  }
+};
+
+var createBigPictureCommentsFragment = function (templateNode, contentQueryString) {
+  var template = templateNode.querySelector(contentQueryString);
+
+  var fragment = document.createDocumentFragment();
+
+  for (var i = 0; i < bigPictureCommentsQuantity.textContent; i++) {
+    var bigPictureComment = template.cloneNode(true);
+
+    bigPictureComment.querySelector('.social__picture').src = 'img/avatar-' + getRandomInteger(1, 6) + '.svg';
+    bigPictureComment.querySelector('.social__text').textContent = pictures[0].description;
+
+    fragment.appendChild(bigPictureComment);
+  }
+  return fragment;
+};
+
 generatePicturesArray(picturesQuantity);
 
-var similarListElement = document.querySelector('.pictures');
-
-var newFragment = createSimilarElements('#picture', '.picture__link', picturesQuantity);
-
-similarListElement.appendChild(newFragment);
+var picturesNode = document.querySelector('.pictures');
+var picturesFragment = createSimilarPicturesFragment(pictureTemplate, '.picture__link', picturesQuantity);
+picturesNode.appendChild(picturesFragment);
 
 var bigPicture = document.querySelector('.big-picture');
 bigPicture.classList.remove('hidden');
 
-var bigPictureImg = document.querySelector('big-picture__img')
-  .content
-  .getElementsByTagName('img');
-
+var bigPictureImgNode = document.querySelector('.big-picture__img');
+var bigPictureImg = bigPictureImgNode.getElementsByTagName('img');
 bigPictureImg.src = pictures[0].url;
 
+var bigPictureLikes = bigPicture.querySelector('.likes-count');
+bigPictureLikes.textContent = pictures[0].likes;
 
+var bigPictureCommentsQuantity = bigPicture.querySelector('.comments-count');
+bigPictureCommentsQuantity.textContent = getCommentsQuantity(pictures, 0);
+
+var bigPictureCommentsTemplate = document.createElement('template');
+bigPictureCommentsTemplate.id = 'comments';
+document.body.insertBefore(bigPictureCommentsTemplate, pictureTemplate);
+insertTemplateContent(bigPictureCommentsTemplate, '.social__comment');
+
+var commentsList = document.querySelector('.social__comments');
+clearNodeContent(commentsList);
+var commentsFragment = createBigPictureCommentsFragment(bigPictureCommentsTemplate, '.social__comment');
+commentsList.appendChild(commentsFragment);
