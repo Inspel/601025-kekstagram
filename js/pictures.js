@@ -105,9 +105,9 @@ picturesNode.appendChild(picturesFragment);
 var bigPicture = document.querySelector('.big-picture');
 // bigPicture.classList.remove('hidden');
 
-//Форма редактирования фотографий
+// Форма редактирования фотографий
 
-//  Открывание/закрывание формы
+// Открывание/закрывание формы
 
 var imgUploadOverlay = document.querySelector('.img-upload__overlay');
 
@@ -135,7 +135,7 @@ var onUploadOverlayEscPress = function (evt) {
 };
 
 uploadFile.addEventListener('change', function () {
-  uploadOverlayOpen()
+  uploadOverlayOpen();
 });
 
 uploadCancelButton.addEventListener('click', function () {
@@ -196,16 +196,18 @@ var effectButtons = document.getElementsByName('effect');
 
 var getScaleValue = function () {
   var pinLeft = window.getComputedStyle(scalePin).getPropertyValue('left');
-  return scaleValue = parseInt(pinLeft);
+  scaleValue = parseInt(pinLeft, 10);
+  return scaleValue;
 };
 
 var getActiveEffect = function (effectValue) {
   var activeEffect;
   for (var i = 0; i < effects.length; i++) {
-    if (effectValue === effects[i].name)
+    if (effectValue === effects[i].name) {
       activeEffect = effects[i];
+    }
   }
-  return activeEffect
+  return activeEffect;
 };
 
 var getEffectDepth = function () {
@@ -230,9 +232,9 @@ var onEffectRadioClick = function () {
   getActiveEffect(getEffectType());
   addFilter();
   if (getActiveEffect(getEffectType()) === effects[0]) {
-    effectScale.classList.add('hidden')
+    effectScale.classList.add('hidden');
   } else {
-    effectScale.classList.remove('hidden')
+    effectScale.classList.remove('hidden');
   }
 };
 
