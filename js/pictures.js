@@ -156,13 +156,15 @@ var MAX_PHOBOS = 3;
 
 var MAX_HEAT = 3;
 
-var previewImage = fileForm.querySelector('.img-upload__preview img');
+var previewImage = fileForm.querySelector('.img-upload__preview');
 
 var effectScale = fileForm.querySelector('.img-upload__scale');
 
 var scalePin = effectScale.querySelector('.scale__pin');
 
 var scaleValue = effectScale.querySelector('.scale__value').value;
+
+var effectsList = fileForm.querySelector('.img-upload__effects');
 
 var effectButtons = document.getElementsByName('effect');
 
@@ -175,14 +177,30 @@ var getEffectDepth = function (effect) {
   return (scaleValue * effect.maxValue) / MAX_SCALE;
 };
 
+var addEffect = function (effectValue) {
+  previewImage.classList.add('effects__preview--' + effectValue)
+};
+
+var deleteOldEffect = function () {
+  for (var i = 0; i < previewImage.classList.length; i++) {
+    var oldEffectClass;
+    if (previewImage.classList[i].search(/^effects__preview--/) === 0) {
+      oldEffectClass = previewImage.classList[i];
+      previewImage.classList.remove(oldEffectClass)
+    }
+  }
+};
+
 var onEffectRadioClick = function () {
+  deleteOldEffect();
   var activeFilter;
   for (var i = 0; i < effectButtons.length; i++) {
     if (effectButtons[i].checked) {
       activeFilter = effectButtons[i];
     }
   }
-  previewImage.className = 'effects__preview--' + activeFilter.value
+  var effectType = activeFilter.value;
+  addEffect(effectType)
 };
 
 for (var i = 0; i < effectButtons.length; i++) {
