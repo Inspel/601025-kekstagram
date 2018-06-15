@@ -4,6 +4,8 @@ var COMMENTS_POOL = ['Всё отлично!', 'В целом всё непло�
 
 var DESCRIPTIONS_POOL = ['Тестим новую камеру!', 'Затусили с друзьями на море', 'Как же круто тут кормят', 'Отдыхаем...', 'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......', 'Вот это тачка!'];
 
+var ESC_KEYCODE = 27;
+
 var pictures = [];
 var picturesQuantity = 25;
 var pictureTemplate = document.querySelector('#picture');
@@ -101,7 +103,91 @@ var picturesFragment = createSimilarPicturesFragment(pictureTemplate, '.picture_
 picturesNode.appendChild(picturesFragment);
 
 var bigPicture = document.querySelector('.big-picture');
-bigPicture.classList.remove('hidden');
+// bigPicture.classList.remove('hidden');
+
+//Форма редактирования фотографий
+
+//  Открывание/закрывание формы
+
+var imgUploadOverlay = document.querySelector('.img-upload__overlay');
+
+var uploadCancelButton = document.querySelector('.img-upload__cancel');
+
+var fileForm = document.querySelector('.img-upload__form');
+
+var uploadFile = fileForm.elements['filename'];
+
+var uploadOverlayOpen = function () {
+  imgUploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onUploadOverlayEscPress);
+};
+
+var uploadOverlayClose = function () {
+  imgUploadOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', onUploadOverlayEscPress);
+  uploadFile.reset();
+};
+
+var onUploadOverlayEscPress = function (evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    uploadOverlayClose();
+  }
+};
+
+uploadFile.addEventListener('change', function () {
+  uploadOverlayOpen()
+});
+
+uploadCancelButton.addEventListener('click', function () {
+  uploadOverlayClose();
+});
+
+// Применение эффекта для изображения
+
+var MAX_SCALE = 100;
+
+var MAX_CHROME = 1;
+
+var MAX_SEPIA = 1;
+
+var MAX_MARVIN = 100;
+
+var MAX_PHOBOS = 3;
+
+var MAX_HEAT = 3;
+
+var previewImage = fileForm.querySelector('.img-upload__preview img');
+
+var effectScale = fileForm.querySelector('.img-upload__scale');
+
+var scalePin = effectScale.querySelector('.scale__pin');
+
+var scaleValue = effectScale.querySelector('.scale__value').value;
+
+var effectButtons = document.getElementsByName('effect');
+
+var getScaleValue = function () {
+  var pinLeft = window.getComputedStyle(scalePin).getPropertyValue('left');
+  return scaleValue = parseInt(pinLeft);
+};
+
+var getEffectDepth = function (effect) {
+  return (scaleValue * effect.maxValue) / MAX_SCALE;
+};
+
+var onEffectRadioClick = function () {
+  var activeFilter;
+  for (var i = 0; i < effectButtons.length; i++) {
+    if (effectButtons[i].checked) {
+      activeFilter = effectButtons[i];
+    }
+  }
+  previewImage.className = 'effects__preview--' + activeFilter.value
+};
+
+for (var i = 0; i < effectButtons.length; i++) {
+effectButtons[i].addEventListener('click', onEffectRadioClick);
+}
 
 var bigPictureImgNode = document.querySelector('.big-picture__img');
 var bigPictureImg = bigPictureImgNode.getElementsByTagName('img');
