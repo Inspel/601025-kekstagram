@@ -201,13 +201,13 @@ var getEffectType = function () {
 
 var getActiveEffect = function () {
   var effectValue = getEffectType();
-  var activeEffect;
+  var effect;
   for (var i = 0; i < effects.length; i++) {
     if (effectValue === effects[i].name) {
-      activeEffect = effects[i];
+      effect = effects[i];
     }
   }
-  return activeEffect;
+  return effect;
 };
 
 var addFilter = function (filter) {
