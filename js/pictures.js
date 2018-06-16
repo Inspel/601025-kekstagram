@@ -85,9 +85,9 @@ var picturesNode = document.querySelector('.pictures');
 var picturesFragment = createSimilarPicturesFragment(pictureTemplate, '.picture__link', picturesQuantity);
 picturesNode.appendChild(picturesFragment);
 
-//Полноэкранное изображение
+// Полноэкранное изображение
 
-//Наполнение оверлея полноэкранного изображения контентом
+// Наполнение оверлея полноэкранного изображения контентом
 var bigPicture = document.querySelector('.big-picture');
 
 var bigPictureCommentsQuantity = bigPicture.querySelector('.comments-count');
@@ -133,13 +133,13 @@ var createCommentsTemplate = function () {
   return commentsTemplate;
 };
 
-//Обработчик клика по маленькому изображению
+// Обработчик клика по маленькому изображению
 var onPictureClick = function (event) {
   var activePicture = event.target;
   var index = getActivePictureIndex(event.target);
   var commentsList = document.querySelector('.social__comments');
   var commentsQuantity = getCommentsQuantity(pictures, index);
-  var bigPictureCommentsTemplate =  createCommentsTemplate();
+  var bigPictureCommentsTemplate = createCommentsTemplate();
 
   var commentsFragment = createBigPictureCommentsFragment(bigPictureCommentsTemplate, '.social__comment', index, commentsQuantity);
 
@@ -156,7 +156,7 @@ var picturesElements = document.querySelectorAll('.picture__link');
 
 var addPicturesListeners = function () {
   for (i = 0; i < picturesElements.length; i++) {
-    picturesElements[i].addEventListener('click', onPictureClick)
+    picturesElements[i].addEventListener('click', onPictureClick);
   }
 };
 addPicturesListeners();
@@ -227,9 +227,10 @@ var effectButtons = document.getElementsByName('effect');
 var getEffectType = function () {
   for (var i = 0; i < effectButtons.length; i++) {
     if (effectButtons[i].checked) {
-      return effectButtons[i].value;
+      break
     }
   }
+  return effectButtons[i].value;
 };
 
 var addFilter = function (filter) {
@@ -274,7 +275,7 @@ var setEffectDepth = function (effectType, effectDepthValue) {
 var onScalePinMouseup = function () {
   var activeEffect = getEffectType();
   var effectDepth = getEffectDepth(activeEffect);
-  setEffectDepth(effects[activeEffect], effectDepth)
+  setEffectDepth(effects[activeEffect], effectDepth);
 };
 
 scalePin.addEventListener('mouseup', onScalePinMouseup);
