@@ -103,7 +103,6 @@ var picturesFragment = createSimilarPicturesFragment(pictureTemplate, '.picture_
 picturesNode.appendChild(picturesFragment);
 
 var bigPicture = document.querySelector('.big-picture');
-// bigPicture.classList.remove('hidden');
 
 // Форма редактирования фотографий
 
@@ -118,6 +117,7 @@ var fileForm = document.querySelector('.img-upload__form');
 var uploadFile = fileForm.elements['filename'];
 
 var uploadOverlayOpen = function () {
+  addFilter(); //Функция описана в блоке "Применение эффекта для изображения"
   imgUploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onUploadOverlayEscPress);
 };
@@ -125,12 +125,12 @@ var uploadOverlayOpen = function () {
 var uploadOverlayClose = function () {
   imgUploadOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onUploadOverlayEscPress);
-  uploadFile.reset();
 };
 
 var onUploadOverlayEscPress = function (evt) {
   if (evt.keyCode === ESC_KEYCODE) {
     uploadOverlayClose();
+    fileForm.reset();
   }
 };
 
@@ -186,37 +186,7 @@ var effects = [none, chrome, sepia, marvin, phobos, heat];
 
 var previewImage = fileForm.querySelector('.img-upload__preview img');
 
-var effectScale = fileForm.querySelector('.img-upload__scale');
-
-var scalePin = effectScale.querySelector('.scale__pin');
-
-var scaleValue = effectScale.querySelector('.scale__value').value;
-
 var effectButtons = document.getElementsByName('effect');
-
-var getScaleValue = function () {
-  var pinLeft = window.getComputedStyle(scalePin).getPropertyValue('left');
-  scaleValue = parseInt(pinLeft, 10);
-  return scaleValue;
-};
-
-var getActiveEffect = function (effectValue) {
-  var activeEffect;
-  for (var i = 0; i < effects.length; i++) {
-    if (effectValue === effects[i].name) {
-      activeEffect = effects[i];
-    }
-  }
-  return activeEffect;
-};
-
-var getEffectDepth = function () {
-  return (getScaleValue() * getActiveEffect(getEffectType()).maxValue) / MAX_SCALE;
-};
-
-var addFilter = function () {
-  previewImage.className = 'effects__preview--' + getActiveEffect(getEffectType()).name;
-};
 
 var getEffectType = function () {
   var activeInput;
@@ -228,10 +198,25 @@ var getEffectType = function () {
   return activeInput.value;
 };
 
+var getActiveEffect = function () {
+  var effectValue = getEffectType();
+  var activeEffect;
+  for (var i = 0; i < effects.length; i++) {
+    if (effectValue === effects[i].name) {
+      activeEffect = effects[i];
+    }
+  }
+  return activeEffect;
+};
+
+var addFilter = function () {
+  var filter = getActiveEffect();
+  previewImage.className = 'effects__preview--' + filter.name;
+};
+
 var onEffectRadioClick = function () {
-  getActiveEffect(getEffectType());
   addFilter();
-  if (getActiveEffect(getEffectType()) === effects[0]) {
+  if (getActiveEffect() === effects[0]) {
     effectScale.classList.add('hidden');
   } else {
     effectScale.classList.remove('hidden');
@@ -241,6 +226,22 @@ var onEffectRadioClick = function () {
 for (var i = 0; i < effectButtons.length; i++) {
   effectButtons[i].addEventListener('click', onEffectRadioClick);
 }
+
+var effectScale = fileForm.querySelector('.img-upload__scale');
+
+var scalePin = effectScale.querySelector('.scale__pin');
+
+var scaleValue = effectScale.querySelector('.scale__value').value;
+
+var getEffectDepth = function () {
+  return (getScaleValue() * getActiveEffect(getEffectType()).maxValue) / MAX_SCALE;
+};
+
+var getScaleValue = function () {
+  var pinLeft = window.getComputedStyle(scalePin).getPropertyValue('left');
+  scaleValue = parseInt(pinLeft, 10);
+  return scaleValue;
+};
 
 var bigPictureImgNode = document.querySelector('.big-picture__img');
 var bigPictureImg = bigPictureImgNode.getElementsByTagName('img');
