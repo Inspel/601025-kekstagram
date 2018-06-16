@@ -117,7 +117,8 @@ var fileForm = document.querySelector('.img-upload__form');
 var uploadFile = fileForm.elements['filename'];
 
 var uploadOverlayOpen = function () {
-  addFilter(); //Функция описана в блоке "Применение эффекта для изображения"
+  var activeEffect = getActiveEffect();
+  addFilter(activeEffect); //Функции описаны в блоке "Применение эффекта для изображения"
   imgUploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onUploadOverlayEscPress);
 };
@@ -209,14 +210,14 @@ var getActiveEffect = function () {
   return activeEffect;
 };
 
-var addFilter = function () {
-  var filter = getActiveEffect();
+var addFilter = function (filter) {
   previewImage.className = 'effects__preview--' + filter.name;
 };
 
 var onEffectRadioClick = function () {
-  addFilter();
-  if (getActiveEffect() === effects[0]) {
+  var activeEffect = getActiveEffect();
+  addFilter(activeEffect);
+  if (activeEffect === effects[0]) {
     effectScale.classList.add('hidden');
   } else {
     effectScale.classList.remove('hidden');
