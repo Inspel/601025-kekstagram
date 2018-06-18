@@ -357,6 +357,12 @@ var onHashtagInput = function (event) {
     return true;
   };
 
+  console.log(testHashtagLength());
+  //
+ console.log(typeof testHashtagLength());
+
+  console.log(hashtagsArray);
+
   switch (false) {
 
     case testFirstHash():
@@ -367,9 +373,9 @@ var onHashtagInput = function (event) {
       target.setCustomValidity('Решетка очень одинока!');
       break;
 
-    case testHashtagLength():
-      var number = testHashtagLength() + 1;
-      target.setCustomValidity(number + '-й хэштег слишком длинный');
+    case typeof testHashtagLength() === "boolean":
+      var hashTagNumber = testHashtagLength() + 1;
+      target.setCustomValidity(hashTagNumber + '-й хэштег слишком длинный');
       break;
 
     case testSimilarHashtags():
