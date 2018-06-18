@@ -150,16 +150,41 @@ var onPictureClick = function (event) {
   commentsList.appendChild(commentsFragment);
 
   bigPicture.classList.remove('hidden');
+  document.addEventListener('keydown', onBigPictureEscPress);
 };
 
 var picturesElements = document.querySelectorAll('.picture__link');
 
 var addPicturesListeners = function () {
-  for (i = 0; i < picturesElements.length; i++) {
+  for (var i = 0; i < picturesElements.length; i++) {
     picturesElements[i].addEventListener('click', onPictureClick);
   }
 };
 addPicturesListeners();
+
+// Закрытие полноэкранного изображения
+var bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
+var bigPictureCommentInput = bigPicture.querySelector('.social__footer-text');
+
+var closeBigPicture = function () {
+  bigPicture.classList.add('hidden');
+  document.removeEventListener('keydown', onBigPictureEscPress);
+};
+
+var onBigPictureEscPress = function (event) {
+  if (event.keyCode === ESC_KEYCODE) {
+    closeBigPicture();
+  }
+};
+
+bigPictureCloseButton.addEventListener('click', closeBigPicture);
+
+bigPictureCommentInput.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onBigPictureEscPress);
+});
+bigPictureCommentInput.addEventListener('blur', function () {
+  document.addEventListener('keydown', onBigPictureEscPress);
+});
 
 // Форма редактирования фотографий
 
@@ -227,7 +252,7 @@ var effectButtons = document.getElementsByName('effect');
 var getEffectType = function () {
   for (var i = 0; i < effectButtons.length; i++) {
     if (effectButtons[i].checked) {
-      break
+      break;
     }
   }
   return effectButtons[i].value;
@@ -244,9 +269,13 @@ var onEffectRadioClick = function (event) {
   effectScale.classList.toggle('hidden', activeEffect === 'none');
 };
 
-for (var i = 0; i < effectButtons.length; i++) {
-  effectButtons[i].addEventListener('click', onEffectRadioClick);
-}
+var addEffectsListeners = function () {
+  for (var i = 0; i < effectButtons.length; i++) {
+    effectButtons[i].addEventListener('click', onEffectRadioClick);
+  }
+};
+
+addEffectsListeners();
 
 var effectScale = fileForm.querySelector('.img-upload__scale');
 var scalePin = effectScale.querySelector('.scale__pin');
@@ -279,3 +308,100 @@ var onScalePinMouseup = function () {
 };
 
 scalePin.addEventListener('mouseup', onScalePinMouseup);
+
+// Хэштеги и комментарий
+
+// Хэштеги
+var bigPictureText = fileForm.querySelector('.img-upload__text');
+var hashtagInput = bigPictureText.querySelector('.text__hashtags');
+
+var onHashtagInput = function (event) {
+  var target = event.target;
+  var hashtagsArray = target.value.split(/\s/);
+
+  var testFirstHash = function () {
+    for (var i = 0; i < hashtagsArray.length; i++) {
+      if (hashtagsArray[i][0] !== '#') {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  var testHashtagContent = function () {
+    for (var i = 0; i < hashtagsArray.length; i++) {
+      if (hashtagsArray[i] === '#') {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  var testHashtagLength = function () {
+    for (var i = 0; i < hashtagsArray.length; i++) {
+      if (hashtagsArray[i].length > 20) {
+        return i;
+      }
+    }
+    return true;
+  };
+
+  var testSimilarHashtags = function () {
+    var currentHashtag = hashtagsArray[0];
+    for (var i = 1; i < hashtagsArray.length; i++) {
+      if (hashtagsArray[i].toUpperCase() === currentHashtag.toUpperCase()) {
+        return false;
+      }
+      currentHashtag = hashtagsArray[i];
+    }
+    return true;
+  };
+
+  switch (false) {
+
+    case testFirstHash():
+      target.setCustomValidity('Начни хэштег с решетки!');
+      break;
+
+    case testHashtagContent():
+      target.setCustomValidity('Решетка очень одинока!');
+      break;
+
+    case testHashtagLength():
+      var number = testHashtagLength() + 1;
+      target.setCustomValidity(number + '-й хэштег слишком длинный');
+      break;
+
+    case testSimilarHashtags():
+      target.setCustomValidity('Пусть все хэштеги будут разными!');
+      break;
+
+    case hashtagsArray.length <= 5:
+      target.setCustomValidity('Не больше 5 хэштегов');
+      break;
+
+    default:
+      target.setCustomValidity('');
+  }
+};
+
+hashtagInput.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onUploadOverlayEscPress);
+});
+
+hashtagInput.addEventListener('blur', function () {
+  document.addEventListener('keydown', onUploadOverlayEscPress);
+});
+
+hashtagInput.addEventListener('input', onHashtagInput);
+
+// Комментарий
+var descriptionInput = bigPictureText.querySelector('.text__description');
+
+descriptionInput.addEventListener('focus', function () {
+  document.removeEventListener('keydown', onUploadOverlayEscPress);
+});
+descriptionInput.addEventListener('blur', function () {
+  document.addEventListener('keydown', onUploadOverlayEscPress);
+});
+
