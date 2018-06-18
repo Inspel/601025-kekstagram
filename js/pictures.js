@@ -337,6 +337,15 @@ var onHashtagInput = function (event) {
     return true;
   };
 
+  var testHashtagLength = function () {
+    for (var i = 0; i < hashtagsArray.length; i++) {
+      if (hashtagsArray[i].length > 20) {
+        return i;
+      }
+    }
+    return true;
+  };
+
   var testSimilarHashtags = function () {
     var currentHashtag = hashtagsArray[0];
     for (var i = 1; i < hashtagsArray.length; i++) {
@@ -348,33 +357,31 @@ var onHashtagInput = function (event) {
     return true;
   };
 
-  var testHashtagLength = function () {
-    for (var i = 0; i < hashtagsArray.length; i++) {
-      if (hashtagsArray[i].length > 20) {
-        return i;
-      }
-    }
-    return true;
-  };
+  switch (false) {
 
-  if (testFirstHash() === false) {
-    target.setCustomValidity('Начни хэштег с решетки!');
+    case testFirstHash():
+      target.setCustomValidity('Начни хэштег с решетки!');
+      break;
 
-  } else if (testHashtagContent() === false) {
-    target.setCustomValidity('Решетка очень одинока!');
+    case testHashtagContent():
+      target.setCustomValidity('Решетка очень одинока!');
+      break;
 
-  } else if (testSimilarHashtags() === false) {
-    target.setCustomValidity('Пусть все хэштеги будут разными!');
+    case testHashtagLength():
+      var number = testHashtagLength() + 1;
+      target.setCustomValidity(number + '-й хэштег слишком длинный');
+      break;
 
-  } else if (hashtagsArray.length > 5) {
+    case testSimilarHashtags():
+      target.setCustomValidity('Пусть все хэштеги будут разными!');
+      break;
 
-    target.setCustomValidity('Не больше 5 хэштегов');
-  } else if (testHashtagLength() !== true) {
-    var number = testHashtagLength() + 1;
-    target.setCustomValidity(number + '-й хэштег слишком длинный');
+    case hashtagsArray.length <= 5:
+      target.setCustomValidity('Не больше 5 хэштегов');
+      break;
 
-  } else {
-    target.setCustomValidity('');
+    default:
+      target.setCustomValidity('');
   }
 };
 
@@ -397,3 +404,4 @@ descriptionInput.addEventListener('focus', function () {
 descriptionInput.addEventListener('blur', function () {
   document.addEventListener('keydown', onUploadOverlayEscPress);
 });
+
