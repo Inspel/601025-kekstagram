@@ -327,7 +327,9 @@ scalePin.addEventListener('mousedown', function (event) {
     var shift = startX - moveEvent.clientX;
     var scalePinLeftValue = startX - shift - scaleLineLeftOffset;
 
-    if (scalePinLeftValue < 0 || scalePinLeftValue > MAX_SCALE) return;
+    if (scalePinLeftValue < 0 || scalePinLeftValue > MAX_SCALE) {
+      return;
+    }
 
     scalePin.style.left = scalePinLeftValue + 'px';
 
