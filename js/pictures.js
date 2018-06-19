@@ -195,9 +195,7 @@ var fileForm = document.querySelector('.img-upload__form');
 var uploadFile = fileForm.elements['filename'];
 
 var uploadOverlayOpen = function () {
-  scalePin.style.left = MAX_SCALE + 'px';
-  scaleLevel.style.width = MAX_SCALE + 'px';
-
+  setScaleDefault();
   var defaultEffect = getEffectType();
   addFilter(defaultEffect);
   activateEffect(defaultEffect);
@@ -269,8 +267,10 @@ var addFilter = function (filter) {
 var onEffectRadioClick = function (event) {
   previewImage.removeAttribute('style');
   var activeEffect = event.target.value;
-  addFilter(activeEffect);
   effectScale.classList.toggle('hidden', activeEffect === 'none');
+  addFilter(activeEffect);
+  setScaleDefault();
+  activateEffect(activeEffect);
 };
 
 var addEffectsListeners = function () {
@@ -286,6 +286,11 @@ var effectScale = fileForm.querySelector('.img-upload__scale');
 var scaleLine = effectScale.querySelector('.scale__line');
 var scalePin = effectScale.querySelector('.scale__pin');
 var scaleLevel = effectScale.querySelector('.scale__level');
+
+var setScaleDefault = function () {
+  scalePin.style.left = MAX_SCALE + 'px';
+  scaleLevel.style.width = MAX_SCALE + 'px';
+};
 
 var getScaleValue = function () {
   var scalePinLeft = scalePin.style.left.toString();
