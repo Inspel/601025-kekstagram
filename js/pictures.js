@@ -195,8 +195,12 @@ var fileForm = document.querySelector('.img-upload__form');
 var uploadFile = fileForm.elements['filename'];
 
 var uploadOverlayOpen = function () {
+  scalePin.style.left = MAX_SCALE + 'px';
+  scaleLevel.style.width = MAX_SCALE + 'px';
+
   var defaultEffect = getEffectType();
   addFilter(defaultEffect);
+  activateEffect();
   imgUploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onUploadOverlayEscPress);
 };
@@ -274,22 +278,23 @@ var addEffectsListeners = function () {
     effectButtons[i].addEventListener('click', onEffectRadioClick);
   }
 };
-
 addEffectsListeners();
 
+
+// Перемещение пина и обработка его положения
 var effectScale = fileForm.querySelector('.img-upload__scale');
+var scaleLine = effectScale.querySelector('.scale__line');
 var scalePin = effectScale.querySelector('.scale__pin');
-var scaleValue = effectScale.querySelector('.scale__value').value;
+var scaleLevel = effectScale.querySelector('.scale__level');
 
 var getScaleValue = function () {
-  var pinLeft = window.getComputedStyle(scalePin).getPropertyValue('left');
-  scaleValue = parseInt(pinLeft, 10);
-  return scaleValue;
+  var scalePinLeft = scalePin.style.left.toString();
+  return (scalePinLeft.slice(0, -2) * 100) / MAX_SCALE;
 };
 
 var getEffectDepth = function (effectName) {
   var effectMaxValue = effects[effectName].maxValue;
-  return (getScaleValue() * effectMaxValue) / MAX_SCALE;
+  return (getScaleValue() * effectMaxValue) / 100;
 
 };
 
@@ -301,16 +306,47 @@ var setEffectDepth = function (effectType, effectDepthValue) {
   }
 };
 
-var onScalePinMouseup = function () {
+var activateEffect = function () {
   var activeEffect = getEffectType();
   var effectDepth = getEffectDepth(activeEffect);
+  effectScale.querySelector('.scale__value').value = getScaleValue();
   setEffectDepth(effects[activeEffect], effectDepth);
 };
 
-scalePin.addEventListener('mouseup', onScalePinMouseup);
+scalePin.addEventListener('mousedown', function (event) {
+  var startX = event.clientX;
+
+  var onMouseMove = function (moveEvent) {
+    moveEvent.preventDefault();
+    var shift = startX - moveEvent.clientX;
+    var scalePinLeftValue = startX - shift - scaleLine.getBoundingClientRect().x;
+
+    if (scalePinLeftValue < 0) {
+      scalePinLeftValue = 0;
+    } else if (scalePinLeftValue > MAX_SCALE) {
+      scalePinLeftValue = MAX_SCALE;
+    }
+
+    scalePin.style.left = scalePinLeftValue + 'px';
+
+    scaleLevel.style.width = scalePinLeftValue + 'px';
+
+    activateEffect();
+  };
+
+  var onScalePinMouseup = function () {
+
+    activateEffect();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onScalePinMouseup);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onScalePinMouseup);
+});
 
 // Хэштеги и комментарий
-
 // Хэштеги
 var bigPictureText = fileForm.querySelector('.img-upload__text');
 var hashtagInput = bigPictureText.querySelector('.text__hashtags');
