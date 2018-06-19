@@ -200,7 +200,7 @@ var uploadOverlayOpen = function () {
 
   var defaultEffect = getEffectType();
   addFilter(defaultEffect);
-  activateEffect();
+  activateEffect(defaultEffect);
   imgUploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onUploadOverlayEscPress);
 };
@@ -306,37 +306,34 @@ var setEffectDepth = function (effectType, effectDepthValue) {
   }
 };
 
-var activateEffect = function () {
-  var activeEffect = getEffectType();
-  var effectDepth = getEffectDepth(activeEffect);
+var activateEffect = function (effectName) {
+  var effectDepth = getEffectDepth(effectName);
   effectScale.querySelector('.scale__value').value = getScaleValue();
-  setEffectDepth(effects[activeEffect], effectDepth);
+  setEffectDepth(effects[effectName], effectDepth);
 };
 
 scalePin.addEventListener('mousedown', function (event) {
   var startX = event.clientX;
+  var scaleLineLeftOffset = scaleLine.getBoundingClientRect().x;
+  var activeEffect = previewImage.classList.value.split('effects__preview--')[1];
 
   var onMouseMove = function (moveEvent) {
     moveEvent.preventDefault();
     var shift = startX - moveEvent.clientX;
-    var scalePinLeftValue = startX - shift - scaleLine.getBoundingClientRect().x;
+    var scalePinLeftValue = startX - shift - scaleLineLeftOffset;
 
-    if (scalePinLeftValue < 0) {
-      scalePinLeftValue = 0;
-    } else if (scalePinLeftValue > MAX_SCALE) {
-      scalePinLeftValue = MAX_SCALE;
-    }
+    if (scalePinLeftValue < 0 || scalePinLeftValue > MAX_SCALE) return;
 
     scalePin.style.left = scalePinLeftValue + 'px';
 
     scaleLevel.style.width = scalePinLeftValue + 'px';
 
-    activateEffect();
+    activateEffect(activeEffect);
   };
 
   var onScalePinMouseup = function () {
 
-    activateEffect();
+    activateEffect(activeEffect);
 
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onScalePinMouseup);
