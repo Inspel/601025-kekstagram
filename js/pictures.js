@@ -358,7 +358,7 @@ var onHashtagInput = function (event) {
   var testFirstHash = function () {
     for (var i = 0; i < hashtagsArray.length; i++) {
       if (hashtagsArray[i][0] !== '#') {
-        return false;
+        return i + 1;
       }
     }
     return true;
@@ -367,7 +367,7 @@ var onHashtagInput = function (event) {
   var testHashtagContent = function () {
     for (var i = 0; i < hashtagsArray.length; i++) {
       if (hashtagsArray[i] === '#') {
-        return false;
+        return i + 1;
       }
     }
     return true;
@@ -376,7 +376,7 @@ var onHashtagInput = function (event) {
   var testHashtagLength = function () {
     for (var i = 0; i < hashtagsArray.length; i++) {
       if (hashtagsArray[i].length > 20) {
-        return i;
+        return i + 1;
       }
     }
     return true;
@@ -395,17 +395,16 @@ var onHashtagInput = function (event) {
 
   switch (false) {
 
-    case testFirstHash():
-      target.setCustomValidity('Начни хэштег с решетки!');
+    case typeof testFirstHash() === 'boolean':
+      target.setCustomValidity('Начни ' + testFirstHash() + '-й хэштег с решетки!');
       break;
 
-    case testHashtagContent():
-      target.setCustomValidity('Решетка очень одинока!');
+    case typeof testHashtagContent() === 'boolean':
+      target.setCustomValidity('У хэштэга ' + testHashtagContent() + ' решетка очень одинока!');
       break;
 
     case typeof testHashtagLength() === 'boolean':
-      var hashTagNumber = testHashtagLength() + 1;
-      target.setCustomValidity(hashTagNumber + '-й хэштег слишком длинный');
+      target.setCustomValidity(testHashtagLength() + '-й хэштег слишком длинный');
       break;
 
     case testSimilarHashtags():
