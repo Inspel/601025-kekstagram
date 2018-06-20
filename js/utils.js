@@ -1,9 +1,11 @@
 'use strict';
 
-window.util = (function () {
+(function () {
   var ESC_KEYCODE = 27;
 
-  return {
+  window.util =  {
+    pictureTemplate: document.querySelector('#picture'),
+
     getRandomInteger: function (min, max) {
       var random = min + Math.random() * (max + 1 - min);
       random = Math.floor(random);
@@ -19,6 +21,12 @@ window.util = (function () {
     getRndProperty: function (arr) {
       var rndIndex = window.util.getRandomInteger(0, arr.length - 1);
       return arr[rndIndex];
+    },
+
+    clearNodeContent: function (nodeToClear) {
+      while (nodeToClear.firstChild) {
+        nodeToClear.removeChild(nodeToClear.firstChild);
+      }
     }
-  }
+  };
 })();
