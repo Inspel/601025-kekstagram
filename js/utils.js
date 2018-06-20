@@ -14,6 +14,11 @@ window.util = (function () {
       if (event.keyCode === ESC_KEYCODE) {
         action();
       }
+    },
+
+    getRndProperty: function (arr) {
+      var rndIndex = window.util.getRandomInteger(0, arr.length - 1);
+      return arr[rndIndex];
     }
-  };
+  }
 })();

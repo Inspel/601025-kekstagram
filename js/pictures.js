@@ -1,41 +1,5 @@
 'use strict';
-
-var COMMENTS_POOL = ['Всё отлично!', 'В целом всё неплохо. Но не всё.', 'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.', 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.', 'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.', 'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
-
-var DESCRIPTIONS_POOL = ['Тестим новую камеру!', 'Затусили с друзьями на море', 'Как же круто тут кормят', 'Отдыхаем...', 'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......', 'Вот это тачка!'];
-
-var pictures = [];
-var picturesQuantity = 25;
 var pictureTemplate = document.querySelector('#picture');
-
-
-var getRndProperty = function (arr) {
-  var rndIndex = window.util.getRandomInteger(0, arr.length - 1);
-  return arr[rndIndex];
-};
-
-var generateComments = function (quantity) {
-  var comments = [];
-  for (var i = 0; i < quantity; i++) {
-    var newComment = getRndProperty(COMMENTS_POOL);
-
-    comments.push(newComment);
-  }
-  return comments;
-};
-
-var generatePicturesArray = function (quantity) {
-  var newPicture;
-  for (var i = 1; i <= quantity; i++) {
-    newPicture = {
-      url: 'photos/' + i + '.jpg',
-      likes: window.util.getRandomInteger(15, 200),
-      comments: generateComments(window.util.getRandomInteger(1, 2)),
-      description: getRndProperty(DESCRIPTIONS_POOL)
-    };
-    pictures.push(newPicture);
-  }
-};
 
 var getCommentsQuantity = function (arr, index) {
   var pictureComments = arr[index].comments;
@@ -51,28 +15,15 @@ var createSimilarPicturesFragment = function (templateNode, contentQueryString, 
   for (var i = 0; i < elementsQuantity; i++) {
     var pictureElement = template.cloneNode(true);
 
-    pictureElement.querySelector('.picture__img').src = pictures[i].url;
-    pictureElement.querySelector('.picture__stat--comments').textContent = getCommentsQuantity(pictures, i);
-    pictureElement.querySelector('.picture__stat--likes').textContent = pictures[i].likes;
+    pictureElement.querySelector('.picture__img').src = window.pictures[i].url;
+    pictureElement.querySelector('.picture__stat--comments').textContent = getCommentsQuantity(window.pictures, i);
+    pictureElement.querySelector('.picture__stat--likes').textContent = window.pictures[i].likes;
 
     fragment.appendChild(pictureElement);
   }
   return fragment;
 };
 
-var insertTemplateContent = function (templateNode, nodeQueryString) {
-  var template = templateNode;
-  var exampleNode = document.querySelector(nodeQueryString);
-  template.appendChild(exampleNode);
-};
-
-var clearNodeContent = function (nodeToClear) {
-  while (nodeToClear.firstChild) {
-    nodeToClear.removeChild(nodeToClear.firstChild);
-  }
-};
-
-generatePicturesArray(picturesQuantity);
 
 var picturesNode = document.querySelector('.pictures');
 var picturesFragment = createSimilarPicturesFragment(pictureTemplate, '.picture__link', picturesQuantity);
@@ -126,6 +77,12 @@ var createCommentsTemplate = function () {
   return commentsTemplate;
 };
 
+var insertTemplateContent = function (templateNode, nodeQueryString) {
+  var template = templateNode;
+  var exampleNode = document.querySelector(nodeQueryString);
+  template.appendChild(exampleNode);
+};
+
 // Обработчик клика по маленькому изображению
 var onPictureClick = function (event) {
   var activePicture = event.target;
@@ -137,6 +94,12 @@ var onPictureClick = function (event) {
   var commentsFragment = createBigPictureCommentsFragment(bigPictureCommentsTemplate, '.social__comment', index, commentsQuantity);
 
   setBigPictureContent(activePicture, index, commentsQuantity);
+
+  var clearNodeContent = function (nodeToClear) {
+    while (nodeToClear.firstChild) {
+      nodeToClear.removeChild(nodeToClear.firstChild);
+    }
+  };
 
   clearNodeContent(commentsList);
 
@@ -165,8 +128,8 @@ var closeBigPicture = function () {
 };
 
 var onBigPictureEscPress = function (event) {
-  window.util.isEscEvent(event, closeBigPicture()
-  )};
+  window.util.isEscEvent(event, closeBigPicture());
+};
 
 bigPictureCloseButton.addEventListener('click', closeBigPicture);
 
