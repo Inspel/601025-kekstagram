@@ -4,20 +4,13 @@ var COMMENTS_POOL = ['Всё отлично!', 'В целом всё непло�
 
 var DESCRIPTIONS_POOL = ['Тестим новую камеру!', 'Затусили с друзьями на море', 'Как же круто тут кормят', 'Отдыхаем...', 'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......', 'Вот это тачка!'];
 
-var ESC_KEYCODE = 27;
-
 var pictures = [];
 var picturesQuantity = 25;
 var pictureTemplate = document.querySelector('#picture');
 
-var getRandomInteger = function (min, max) {
-  var random = min + Math.random() * (max + 1 - min);
-  random = Math.floor(random);
-  return random;
-};
 
 var getRndProperty = function (arr) {
-  var rndIndex = getRandomInteger(0, arr.length - 1);
+  var rndIndex = window.util.getRandomInteger(0, arr.length - 1);
   return arr[rndIndex];
 };
 
@@ -36,8 +29,8 @@ var generatePicturesArray = function (quantity) {
   for (var i = 1; i <= quantity; i++) {
     newPicture = {
       url: 'photos/' + i + '.jpg',
-      likes: getRandomInteger(15, 200),
-      comments: generateComments(getRandomInteger(1, 2)),
+      likes: window.util.getRandomInteger(15, 200),
+      comments: generateComments(window.util.getRandomInteger(1, 2)),
       description: getRndProperty(DESCRIPTIONS_POOL)
     };
     pictures.push(newPicture);
@@ -115,7 +108,7 @@ var createBigPictureCommentsFragment = function (templateNode, contentQueryStrin
   for (var i = 0; i < quantity; i++) {
     var bigPictureComment = template.cloneNode(true);
 
-    bigPictureComment.querySelector('.social__picture').src = 'img/avatar-' + getRandomInteger(1, 6) + '.svg';
+    bigPictureComment.querySelector('.social__picture').src = 'img/avatar-' + window.util.getRandomInteger(1, 6) + '.svg';
     bigPictureComment.querySelector('.social__text').textContent = pictures[number].description;
 
     fragment.appendChild(bigPictureComment);
@@ -172,10 +165,8 @@ var closeBigPicture = function () {
 };
 
 var onBigPictureEscPress = function (event) {
-  if (event.keyCode === ESC_KEYCODE) {
-    closeBigPicture();
-  }
-};
+  window.util.isEscEvent(event, closeBigPicture()
+  )};
 
 bigPictureCloseButton.addEventListener('click', closeBigPicture);
 
@@ -206,13 +197,11 @@ var uploadOverlayOpen = function () {
 var uploadOverlayClose = function () {
   imgUploadOverlay.classList.add('hidden');
   document.removeEventListener('keydown', onUploadOverlayEscPress);
+  fileForm.reset();
 };
 
 var onUploadOverlayEscPress = function (event) {
-  if (event.keyCode === ESC_KEYCODE) {
-    uploadOverlayClose();
-    fileForm.reset();
-  }
+  window.util.isEscEvent(event, uploadOverlayClose());
 };
 
 uploadFile.addEventListener('change', uploadOverlayOpen);
