@@ -1,7 +1,6 @@
 'use strict';
 
 // Форма редактирования фотографий
-
 var MAX_SCALE = 453;
 
 var effects = {
@@ -31,23 +30,65 @@ var effects = {
 };
 
 // Применение эффекта для изображения
-
 var onEffectRadioClick = function (event) {
-  formRender.previewImage.removeAttribute('style');
+  previewImage.removeAttribute('style');
   var activeEffect = event.target.value;
   effectScale.classList.toggle('hidden', activeEffect === 'none');
-  formRender.addFilter(activeEffect);
+  addFilter(activeEffect);
   setScaleDefault();
   activateEffect(activeEffect);
 };
 
 var addEffectsListeners = function () {
-  for (var i = 0; i < formRender.effectButtons.length; i++) {
-    formRender.effectButtons[i].addEventListener('click', onEffectRadioClick);
+  for (var i = 0; i < effectButtons.length; i++) {
+    effectButtons[i].addEventListener('click', onEffectRadioClick);
   }
 };
 addEffectsListeners();
 
+// Открывание/закрывание формы
+var fileForm = document.querySelector('.img-upload__form');
+
+var effectButtons = document.getElementsByName('effect');
+var defaultEffect = (function () {
+  for (var i = 0; i < effectButtons.length; i++) {
+    if (effectButtons[i].checked) {
+      break;
+    }
+  }
+  return effectButtons[i].value;
+})();
+
+var previewImage = fileForm.querySelector('.img-upload__preview img');
+
+var addFilter = function (filter) {
+  previewImage.className = 'effects__preview--' + filter;
+};
+
+var imgUploadOverlay = document.querySelector('.img-upload__overlay');
+var uploadOverlayOpen = function () {
+  previewImage.removeAttribute('style');
+  setScaleDefault();
+  addFilter(defaultEffect);
+  imgUploadOverlay.classList.remove('hidden');
+  document.addEventListener('keydown', onUploadOverlayEscPress);
+};
+
+var uploadOverlayClose = function () {
+  imgUploadOverlay.classList.add('hidden');
+  document.removeEventListener('keydown', onUploadOverlayEscPress);
+  fileForm.reset();
+};
+
+var onUploadOverlayEscPress = function (event) {
+  util.isEscEvent(event, uploadOverlayClose);
+};
+
+var uploadFile = fileForm.elements['filename'];
+uploadFile.addEventListener('change', uploadOverlayOpen);
+
+var uploadCancelButton = document.querySelector('.img-upload__cancel');
+uploadCancelButton.addEventListener('click', uploadOverlayClose);
 
 // Перемещение пина и обработка его положения
 var effectScale = fileForm.querySelector('.img-upload__scale');
@@ -73,9 +114,9 @@ var getEffectDepth = function (effectName) {
 
 var setEffectDepth = function (effectType, effectDepthValue) {
   if (effectType.units) {
-    formRender.previewImage.style.filter = effectType.filter + '(' + effectDepthValue + effectType.units + ')';
+    previewImage.style.filter = effectType.filter + '(' + effectDepthValue + effectType.units + ')';
   } else {
-    formRender.previewImage.style.filter = effectType.filter + '(' + effectDepthValue + ')';
+    previewImage.style.filter = effectType.filter + '(' + effectDepthValue + ')';
   }
 };
 
@@ -88,7 +129,7 @@ var activateEffect = function (effectName) {
 scalePin.addEventListener('mousedown', function (event) {
   var startX = event.clientX;
   var scaleLineLeftOffset = scaleLine.getBoundingClientRect().x;
-  var activeEffect = formRender.previewImage.classList.value.split('effects__preview--')[1];
+  var activeEffect = previewImage.classList.value.split('effects__preview--')[1];
 
   var onMouseMove = function (moveEvent) {
     moveEvent.preventDefault();

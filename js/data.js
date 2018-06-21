@@ -30,16 +30,19 @@
   };
 
   var picturesQuantity = 25;
-  var likesMin = 15;
-  var likesMax = 200;
+  var LIKES_MIN = 15;
+  var LIKES_MAX = 200;
+  var commentsCountMin = 1;
+  var commentsCountMac = 2;
   var generatePicturesArray = function () {
     var pictures = [];
     var newPicture;
-    for (var i = 1; i <= picturesQuantity; i++) {
+    for (var i = 0; i <= picturesQuantity - 1; i++) {
       newPicture = {
-        url: 'photos/' + i + '.jpg',
-        likes: util.getRandomInteger(likesMin, likesMax),
-        comments: generateComments(util.getRandomInteger(1, 2)),
+        index: i,
+        url: 'photos/' + (i + 1) + '.jpg',
+        likes: util.getRandomInteger(LIKES_MIN, LIKES_MAX),
+        comments: generateComments(util.getRandomInteger(commentsCountMin, commentsCountMac)),
         description: util.getRndProperty(DESCRIPTIONS_POOL)
       };
       pictures.push(newPicture);

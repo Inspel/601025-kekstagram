@@ -4,8 +4,6 @@
   var ESC_KEYCODE = 27;
 
   window.util =  {
-    pictureTemplate: document.querySelector('#picture'),
-
     getRandomInteger: function (min, max) {
       var random = min + Math.random() * (max + 1 - min);
       random = Math.floor(random);
