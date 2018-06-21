@@ -195,8 +195,10 @@ var fileForm = document.querySelector('.img-upload__form');
 var uploadFile = fileForm.elements['filename'];
 
 var uploadOverlayOpen = function () {
+  setScaleDefault();
   var defaultEffect = getEffectType();
   addFilter(defaultEffect);
+  activateEffect(defaultEffect);
   imgUploadOverlay.classList.remove('hidden');
   document.addEventListener('keydown', onUploadOverlayEscPress);
 };
@@ -265,8 +267,10 @@ var addFilter = function (filter) {
 var onEffectRadioClick = function (event) {
   previewImage.removeAttribute('style');
   var activeEffect = event.target.value;
-  addFilter(activeEffect);
   effectScale.classList.toggle('hidden', activeEffect === 'none');
+  addFilter(activeEffect);
+  setScaleDefault();
+  activateEffect(activeEffect);
 };
 
 var addEffectsListeners = function () {
@@ -274,22 +278,28 @@ var addEffectsListeners = function () {
     effectButtons[i].addEventListener('click', onEffectRadioClick);
   }
 };
-
 addEffectsListeners();
 
+
+// Перемещение пина и обработка его положения
 var effectScale = fileForm.querySelector('.img-upload__scale');
+var scaleLine = effectScale.querySelector('.scale__line');
 var scalePin = effectScale.querySelector('.scale__pin');
-var scaleValue = effectScale.querySelector('.scale__value').value;
+var scaleLevel = effectScale.querySelector('.scale__level');
+
+var setScaleDefault = function () {
+  scalePin.style.left = MAX_SCALE + 'px';
+  scaleLevel.style.width = MAX_SCALE + 'px';
+};
 
 var getScaleValue = function () {
-  var pinLeft = window.getComputedStyle(scalePin).getPropertyValue('left');
-  scaleValue = parseInt(pinLeft, 10);
-  return scaleValue;
+  var scalePinLeft = scalePin.style.left.toString();
+  return (scalePinLeft.slice(0, -2) * 100) / MAX_SCALE;
 };
 
 var getEffectDepth = function (effectName) {
   var effectMaxValue = effects[effectName].maxValue;
-  return (getScaleValue() * effectMaxValue) / MAX_SCALE;
+  return (getScaleValue() * effectMaxValue) / 100;
 
 };
 
@@ -301,16 +311,46 @@ var setEffectDepth = function (effectType, effectDepthValue) {
   }
 };
 
-var onScalePinMouseup = function () {
-  var activeEffect = getEffectType();
-  var effectDepth = getEffectDepth(activeEffect);
-  setEffectDepth(effects[activeEffect], effectDepth);
+var activateEffect = function (effectName) {
+  var effectDepth = getEffectDepth(effectName);
+  effectScale.querySelector('.scale__value').value = getScaleValue();
+  setEffectDepth(effects[effectName], effectDepth);
 };
 
-scalePin.addEventListener('mouseup', onScalePinMouseup);
+scalePin.addEventListener('mousedown', function (event) {
+  var startX = event.clientX;
+  var scaleLineLeftOffset = scaleLine.getBoundingClientRect().x;
+  var activeEffect = previewImage.classList.value.split('effects__preview--')[1];
+
+  var onMouseMove = function (moveEvent) {
+    moveEvent.preventDefault();
+    var shift = startX - moveEvent.clientX;
+    var scalePinLeftValue = startX - shift - scaleLineLeftOffset;
+
+    if (scalePinLeftValue < 0 || scalePinLeftValue > MAX_SCALE) {
+      return;
+    }
+
+    scalePin.style.left = scalePinLeftValue + 'px';
+
+    scaleLevel.style.width = scalePinLeftValue + 'px';
+
+    activateEffect(activeEffect);
+  };
+
+  var onScalePinMouseup = function () {
+
+    activateEffect(activeEffect);
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onScalePinMouseup);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onScalePinMouseup);
+});
 
 // Хэштеги и комментарий
-
 // Хэштеги
 var bigPictureText = fileForm.querySelector('.img-upload__text');
 var hashtagInput = bigPictureText.querySelector('.text__hashtags');
@@ -322,7 +362,7 @@ var onHashtagInput = function (event) {
   var testFirstHash = function () {
     for (var i = 0; i < hashtagsArray.length; i++) {
       if (hashtagsArray[i][0] !== '#') {
-        return false;
+        return i + 1;
       }
     }
     return true;
@@ -331,7 +371,7 @@ var onHashtagInput = function (event) {
   var testHashtagContent = function () {
     for (var i = 0; i < hashtagsArray.length; i++) {
       if (hashtagsArray[i] === '#') {
-        return false;
+        return i + 1;
       }
     }
     return true;
@@ -340,7 +380,7 @@ var onHashtagInput = function (event) {
   var testHashtagLength = function () {
     for (var i = 0; i < hashtagsArray.length; i++) {
       if (hashtagsArray[i].length > 20) {
-        return i;
+        return i + 1;
       }
     }
     return true;
@@ -359,17 +399,16 @@ var onHashtagInput = function (event) {
 
   switch (false) {
 
-    case testFirstHash():
-      target.setCustomValidity('Начни хэштег с решетки!');
+    case typeof testFirstHash() === 'boolean':
+      target.setCustomValidity('Начни ' + testFirstHash() + '-й хэштег с решетки!');
       break;
 
-    case testHashtagContent():
-      target.setCustomValidity('Решетка очень одинока!');
+    case typeof testHashtagContent() === 'boolean':
+      target.setCustomValidity('У хэштэга ' + testHashtagContent() + ' решетка очень одинока!');
       break;
 
-    case testHashtagLength():
-      var number = testHashtagLength() + 1;
-      target.setCustomValidity(number + '-й хэштег слишком длинный');
+    case typeof testHashtagLength() === 'boolean':
+      target.setCustomValidity(testHashtagLength() + '-й хэштег слишком длинный');
       break;
 
     case testSimilarHashtags():
