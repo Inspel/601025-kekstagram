@@ -35,14 +35,11 @@
     window.setBigPictureContent(event.target);
   };
 
-  var picturesImages = document.querySelectorAll('.picture__img');
+  var picturesImages = document.querySelectorAll('.picture__link');
   var addPicturesListeners = function () {
     for (var i = 0; i < picturesImages.length; i++) {
       picturesImages[i].addEventListener('click', function (event) {
         openBigPicture(event);
-      });
-      picturesImages[i].addEventListener('keydown', function (event){
-        util.isEnterEvent(event, openBigPicture(event));
       });
     }
   };
