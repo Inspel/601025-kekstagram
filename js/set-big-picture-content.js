@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  var pictureTemplate =  document.querySelector('#picture');
-  var createCommentTemplate = function () {
+  var pictureTemplate = document.querySelector('#picture');
+  var commentTemplateElement = (function () {
     var commentTemplate = document.createElement('template');
     commentTemplate.id = 'comments';
     document.body.insertBefore(commentTemplate, pictureTemplate);
@@ -10,11 +10,10 @@
     commentTemplate.appendChild(commentsNode);
 
     return commentTemplate;
-  };
-  var commentTemplateElement = createCommentTemplate();
+  })();
+
 
   var bigPicturePreview = document.querySelector('.big-picture__preview');
-
   var commentsList = bigPicturePreview.querySelector('.social__comments');
   var createBigPictureCommentsFragment = function (activePictureObject) {
     util.clearNodeContent(commentsList);
@@ -36,7 +35,7 @@
   var bigPictureLikes = bigPicturePreview.querySelector('.likes-count');
   var bigPictureCommentsQuantity = bigPicturePreview.querySelector('.comments-count');
 
-  window.setPreviewContent = function (activeElement) {
+  window.setBigPictureContent = function (activeElement) {
     var activeIndex = activeElement.getAttribute('index');
     var activePictureObject = data[activeIndex];
 

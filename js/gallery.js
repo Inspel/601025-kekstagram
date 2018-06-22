@@ -3,7 +3,7 @@
 (function () {
 
   // Рендер миниатюр
-  var pictureTemplate =  document.querySelector('#picture');
+  var pictureTemplate = document.querySelector('#picture');
   var createSimilarPicturesFragment = function () {
     var template = pictureTemplate.content.querySelector('.picture__link');
     var fragment = document.createDocumentFragment();
@@ -29,16 +29,21 @@
   // Открытие полноэкранного изображения
   var bigPictureNode = document.querySelector('.big-picture');
 
-  var onPictureClick = function (event) {
-    window.setPreviewContent(event.target);
+  var openBigPicture = function (event) {
     bigPictureNode.classList.remove('hidden');
     document.addEventListener('keydown', onBigPictureEscPress);
+    window.setBigPictureContent(event.target);
   };
 
   var picturesImages = document.querySelectorAll('.picture__img');
   var addPicturesListeners = function () {
     for (var i = 0; i < picturesImages.length; i++) {
-      picturesImages[i].addEventListener('click', onPictureClick);
+      picturesImages[i].addEventListener('click', function (event) {
+        openBigPicture(event);
+      });
+      picturesImages[i].addEventListener('keydown', function (event){
+        util.isEnterEvent(event, openBigPicture(event));
+      });
     }
   };
   addPicturesListeners();
