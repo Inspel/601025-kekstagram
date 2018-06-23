@@ -3,7 +3,7 @@
 (function () {
 
   var util = window.util;
-  var data = window.data;
+  var MAX_COMMENTS = 5;
 
   var pictureTemplate = document.querySelector('#picture');
   var commentTemplateElement = (function () {
@@ -12,7 +12,6 @@
     document.body.insertBefore(commentTemplate, pictureTemplate);
     var commentsNode = document.querySelector('.social__comment');
     commentTemplate.appendChild(commentsNode);
-
     return commentTemplate;
   })();
 
@@ -23,7 +22,10 @@
     util.clearNodeContent(commentsList);
     var bigPictureCommentsTemplate = commentTemplateElement.querySelector('.social__comment');
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < activePictureObject.comments.length; i++) {
+    var commentsQuantity = activePictureObject.comments.length;
+    var fragmentCommentsQuantity = (commentsQuantity < MAX_COMMENTS ? commentsQuantity : MAX_COMMENTS);
+
+    for (var i = 0; i < fragmentCommentsQuantity; i++) {
       var newBigPictureComment = bigPictureCommentsTemplate.cloneNode(true);
 
       newBigPictureComment.querySelector('.social__picture').src = 'img/avatar-' + util.getRandomInteger(1, 6) + '.svg';
@@ -41,7 +43,7 @@
 
   window.renderBigPicture = function (activeElement) {
     var activeIndex = activeElement.getAttribute('index');
-    var activePictureObject = data[activeIndex];
+    var activePictureObject = window.gallery[activeIndex];
     bigPictureImg.src = activeElement.src;
     bigPictureDescription.textContent = activePictureObject.description;
     bigPictureLikes.textContent = activePictureObject.likes;

@@ -179,4 +179,11 @@
   descriptionInput.addEventListener('blur', function () {
     document.addEventListener('keydown', onUploadOverlayEscPress);
   });
+
+  fileForm.addEventListener('submit', function (event) {
+    window.upload(new FormData(fileForm), function (response) {
+      imgUploadOverlay.classList.add('hidden');
+    });
+    event.preventDefault();
+  });
 })();
