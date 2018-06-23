@@ -32,6 +32,8 @@
     }
   };
 
+  var util = window.util;
+
   var fileForm = document.querySelector('.img-upload__form');
   var effectScale = fileForm.querySelector('.img-upload__scale');
   var scaleLine = effectScale.querySelector('.scale__line');
@@ -80,7 +82,7 @@
   };
 
   var onUploadOverlayEscPress = function (event) {
-    window.util.isEscEvent(event, uploadOverlayClose);
+    util.isEscEvent(event, uploadOverlayClose);
   };
 
   var uploadFile = fileForm.elements['filename'];

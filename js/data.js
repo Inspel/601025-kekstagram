@@ -19,10 +19,12 @@
     'Вот это тачка!'
   ];
 
+  var util = window.util;
+
   var generateComments = function (quantity) {
     var comments = [];
     for (var i = 0; i < quantity; i++) {
-      var newComment = window.util.getRndProperty(COMMENTS_POOL);
+      var newComment = util.getRndProperty(COMMENTS_POOL);
 
       comments.push(newComment);
     }
@@ -41,9 +43,9 @@
       newPicture = {
         index: i,
         url: 'photos/' + (i + 1) + '.jpg',
-        likes: window.util.getRandomInteger(LIKES_MIN, LIKES_MAX),
-        comments: generateComments(window.util.getRandomInteger(commentsCountMin, commentsCountMac)),
-        description: window.util.getRndProperty(DESCRIPTIONS_POOL)
+        likes: util.getRandomInteger(LIKES_MIN, LIKES_MAX),
+        comments: generateComments(util.getRandomInteger(commentsCountMin, commentsCountMac)),
+        description: util.getRndProperty(DESCRIPTIONS_POOL)
       };
       pictures.push(newPicture);
     }

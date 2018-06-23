@@ -2,20 +2,23 @@
 
 (function () {
 
+  var util = window.util;
+  var data = window.data;
+
   // Рендер миниатюр
   var pictureTemplate = document.querySelector('#picture');
   var createSimilarPicturesFragment = function () {
     var template = pictureTemplate.content.querySelector('.picture__link');
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < window.data.length; i++) {
+    for (var i = 0; i < data.length; i++) {
       var pictureElement = template.cloneNode(true);
       var img = pictureElement.querySelector('.picture__img');
 
-      img.src = window.data[i].url;
-      img.setAttribute('index', window.data[i].index);
-      pictureElement.querySelector('.picture__stat--comments').textContent = window.data[i].comments.length;
-      pictureElement.querySelector('.picture__stat--likes').textContent = window.data[i].likes;
+      img.src = data[i].url;
+      img.setAttribute('index', data[i].index);
+      pictureElement.querySelector('.picture__stat--comments').textContent = data[i].comments.length;
+      pictureElement.querySelector('.picture__stat--likes').textContent = data[i].likes;
 
       fragment.appendChild(pictureElement);
     }
@@ -52,7 +55,7 @@
   };
 
   var onBigPictureEscPress = function (event) {
-    window.util.isEscEvent(event, closeBigPicture);
+    util.isEscEvent(event, closeBigPicture);
   };
 
   var bigPictureCloseButton = bigPictureNode.querySelector('.big-picture__cancel');
