@@ -16,13 +16,13 @@
   var bigPicturePreview = document.querySelector('.big-picture__preview');
   var commentsList = bigPicturePreview.querySelector('.social__comments');
   var createBigPictureCommentsFragment = function (activePictureObject) {
-    util.clearNodeContent(commentsList);
+    window.util.clearNodeContent(commentsList);
     var bigPictureCommentsTemplate = commentTemplateElement.querySelector('.social__comment');
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < activePictureObject.comments.length; i++) {
       var newBigPictureComment = bigPictureCommentsTemplate.cloneNode(true);
 
-      newBigPictureComment.querySelector('.social__picture').src = 'img/avatar-' + util.getRandomInteger(1, 6) + '.svg';
+      newBigPictureComment.querySelector('.social__picture').src = 'img/avatar-' + window.util.getRandomInteger(1, 6) + '.svg';
       newBigPictureComment.querySelector('.social__text').textContent = activePictureObject.comments[i];
 
       fragment.appendChild(newBigPictureComment);
@@ -35,10 +35,9 @@
   var bigPictureLikes = bigPicturePreview.querySelector('.likes-count');
   var bigPictureCommentsQuantity = bigPicturePreview.querySelector('.comments-count');
 
-  window.setBigPictureContent = function (activeElement) {
+  window.renderBigPicture = function (activeElement) {
     var activeIndex = activeElement.getAttribute('index');
-    var activePictureObject = data[activeIndex];
-
+    var activePictureObject = window.data[activeIndex];
     bigPictureImg.src = activeElement.src;
     bigPictureDescription.textContent = activePictureObject.description;
     bigPictureLikes.textContent = activePictureObject.likes;

@@ -80,7 +80,7 @@
   };
 
   var onUploadOverlayEscPress = function (event) {
-    util.isEscEvent(event, uploadOverlayClose);
+    window.util.isEscEvent(event, uploadOverlayClose);
   };
 
   var uploadFile = fileForm.elements['filename'];

@@ -2,9 +2,8 @@
 
 (function () {
   var ESC_KEYCODE = 27;
-  var ENTER_KEYCODE = 13;
 
-  window.util =  {
+  window.util = {
     getRandomInteger: function (min, max) {
       var random = min + Math.random() * (max + 1 - min);
       random = Math.floor(random);
@@ -13,12 +12,6 @@
 
     isEscEvent: function (event, action) {
       if (event.keyCode === ESC_KEYCODE) {
-        action();
-      }
-    },
-
-    isEnterEvent: function (event, action) {
-      if (event.keyCode === ENTER_KEYCODE) {
         action();
       }
     },
