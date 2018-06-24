@@ -25,6 +25,18 @@
       while (nodeToClear.firstChild) {
         nodeToClear.removeChild(nodeToClear.firstChild);
       }
+    },
+    showError: function (errorMessage) {
+      var overlayNode = document.createElement('div');
+      overlayNode.classList.add('error-overlay');
+      overlayNode.classList.add('overlay');
+      overlayNode.classList.add('hidden');
+      var popupNode = document.createElement('div');
+      overlayNode.appendChild(popupNode);
+      popupNode.classList.add('error-popup');
+      document.body.insertAdjacentElement('afterbegin', overlayNode);
+      popupNode.textContent = errorMessage;
+      overlayNode.classList.remove('hidden');
     }
   };
 })();
