@@ -4,7 +4,8 @@
   var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
   var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
 
-  var manageXhr = function (xhr, onLoad, onError) {
+  var manageXhr = function (onLoad, onError) {
+    var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
     xhr.timeout = 5000;
     xhr.addEventListener('load', function () {
@@ -33,7 +34,6 @@
       if (error) {
         onError(error);
       }
-
     });
     xhr.addEventListener('error', function () {
       onError('Произошла ошибка соединения');
@@ -41,22 +41,22 @@
     xhr.addEventListener('timeout', function () {
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
+    return xhr;
   };
+
 
   window.backend = {
     upload: function (data, onLoad, onError) {
-      var xhr = new XMLHttpRequest();
 
-      manageXhr(xhr, onLoad, onError);
+      var xhr = manageXhr(onLoad, onError);
 
       xhr.open('POST', UPLOAD_URL);
       xhr.send(data);
     },
 
     load: function (onLoad, onError) {
-      var xhr = new XMLHttpRequest();
 
-      manageXhr(xhr, onLoad, onError);
+      var xhr = manageXhr(onLoad, onError);
 
       xhr.open('GET', LOAD_URL);
       xhr.send();

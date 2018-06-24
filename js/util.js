@@ -28,15 +28,23 @@
     },
     showError: function (errorMessage) {
       var overlayNode = document.createElement('div');
-      overlayNode.classList.add('error-overlay');
-      overlayNode.classList.add('overlay');
-      overlayNode.classList.add('hidden');
+      overlayNode.classList.add('error-overlay', 'overlay');
       var popupNode = document.createElement('div');
       overlayNode.appendChild(popupNode);
       popupNode.classList.add('error-popup');
       document.body.insertAdjacentElement('afterbegin', overlayNode);
       popupNode.textContent = errorMessage;
-      overlayNode.classList.remove('hidden');
+
+      var closeErrorPopup = function () {
+        document.body.removeChild(overlayNode);
+      };
+
+      var onErrorPopupEscPress = function () {
+        window.util.isEscEvent(event, closeErrorPopup);
+        document.removeEventListener('keydown', onErrorPopupEscPress);
+      };
+
+      document.addEventListener('keydown', onErrorPopupEscPress);
     }
   };
 })();
