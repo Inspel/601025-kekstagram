@@ -179,4 +179,20 @@
   descriptionInput.addEventListener('blur', function () {
     document.addEventListener('keydown', onUploadOverlayEscPress);
   });
+
+  // Отправление данных формы
+  var onUploadSuccess = function () {
+    uploadOverlayClose();
+    setScaleValueDefault();
+  };
+
+  var onUploadError = function (errorMessage) {
+    uploadOverlayClose();
+    window.util.showError(errorMessage);
+  };
+
+  fileForm.addEventListener('submit', function (event) {
+    window.backend.upload(new FormData(fileForm), onUploadSuccess, onUploadError);
+    event.preventDefault();
+  });
 })();

@@ -7,9 +7,10 @@
     var target = event.target;
     var hashtagsArray = target.value.split(/\s/);
 
+
     var testFirstHash = function () {
       for (var i = 0; i < hashtagsArray.length; i++) {
-        if (hashtagsArray[i][0] !== '#') {
+        if (hashtagsArray[i][0] !== '#' && hashtagsArray[i][0] !== undefined) {
           return i + 1;
         }
       }
