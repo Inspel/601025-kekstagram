@@ -6,7 +6,7 @@
   var MAX_SCALE = 453;
   var MAX_SCALE_VALUE = '100';
 
-  var effects = {
+  var effect = {
     none: {},
     chrome: {
       filter: 'grayscale',
@@ -68,7 +68,7 @@
   var imgUploadOverlay = document.querySelector('.img-upload__overlay');
   var uploadOverlayOpen = function () {
     previewImage.removeAttribute('style');
-    activeEffect = effects[defaultEffect];
+    activeEffect = effect[defaultEffect];
     addFilter(defaultEffect);
     setScaleValueDefault();
     imgUploadOverlay.classList.remove('hidden');
@@ -95,7 +95,7 @@
   var activeEffect;
   var onEffectRadioClick = function (event) {
     previewImage.removeAttribute('style');
-    activeEffect = effects[event.target.value];
+    activeEffect = effect[event.target.value];
     effectScale.classList.toggle('hidden', event.target.value === 'none');
     addFilter(event.target.value);
     setScaleValueDefault();

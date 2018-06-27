@@ -41,9 +41,11 @@
   var bigPictureLikes = bigPicturePreview.querySelector('.likes-count');
   var bigPictureCommentsQuantity = bigPicturePreview.querySelector('.comments-count');
 
-  window.renderBigPicture = function (activeElement) {
+  window.renderBigPicture = function (activeElement, array) {
     var activeIndex = activeElement.getAttribute('index');
-    var activePictureObject = window.gallery[activeIndex];
+
+    var activePictureObject = array[activeIndex];
+
     bigPictureImg.src = activeElement.src;
     bigPictureDescription.textContent = activePictureObject.description;
     bigPictureLikes.textContent = activePictureObject.likes;
