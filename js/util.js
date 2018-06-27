@@ -26,6 +26,7 @@
         nodeToClear.removeChild(nodeToClear.firstChild);
       }
     },
+
     showError: function (errorMessage) {
       var overlayNode = document.createElement('div');
       overlayNode.classList.add('error-overlay', 'overlay');
