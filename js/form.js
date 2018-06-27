@@ -7,7 +7,6 @@
   var MAX_SCALE_VALUE = '100';
 
   var effects = {
-    none: {},
     chrome: {
       filter: 'grayscale',
       maxValue: 1
@@ -95,7 +94,7 @@
   var activeEffect;
   var onEffectRadioClick = function (event) {
     previewImage.removeAttribute('style');
-    activeEffect = effects[event.target.value];
+    activeEffect = (effects[event.target.value] || 'none');
     effectScale.classList.toggle('hidden', event.target.value === 'none');
     addFilter(event.target.value);
     setScaleValueDefault();
