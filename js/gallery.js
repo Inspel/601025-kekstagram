@@ -34,6 +34,7 @@
   // Открытие полноэкранного изображения
   var bigPictureNode = document.querySelector('.big-picture');
   var openBigPicture = function (event) {
+    document.body.classList.add('modal-open');
     bigPictureNode.classList.remove('hidden');
     document.addEventListener('keydown', onBigPictureEscPress);
     window.renderBigPicture(event.target, activeFilter.sortedData);
@@ -50,6 +51,7 @@
 
   // Закрытие полноэкранного изображения
   var closeBigPicture = function () {
+    document.body.removeAttribute('modal-open');
     bigPictureNode.classList.add('hidden');
     document.removeEventListener('keydown', onBigPictureEscPress);
   };
@@ -141,7 +143,7 @@
     }
     window.setTimeout(function () {
       renderPicturesMiniatures();
-    }, 1000);
+    }, 7000);
   };
 
   filtersForm.addEventListener('click', onFilterButtonClick);
