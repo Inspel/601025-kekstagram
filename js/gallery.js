@@ -119,7 +119,7 @@
   window.backend.load(onLoadSuccess, onLoadError);
 
 
-  // Обработчик кнопок фильтров
+  // Обработчик нажатий на кнопки фильтров
   var filtersForm = filtersNode.querySelector('.img-filters__form');
   var filterButtons = filtersForm.querySelectorAll('.img-filters__button');
   var onFilterButtonClick = function (event) {
@@ -130,20 +130,20 @@
     var activeButton = event.target;
     activeButton.classList.add('img-filters__button--active');
 
-    picturesImages.forEach(function (currentValue) {
-      currentValue.remove();
-    });
-
     var activeFilterName = activeButton.getAttribute('id').slice(7);
     activeFilter = pictureFilter[activeFilterName];
 
+    var DEBOUNCE_INTERVAL = 500; // ms
     var lastTimeout;
     if (lastTimeout) {
       window.clearTimeout(lastTimeout);
     }
     window.setTimeout(function () {
+      picturesImages.forEach(function (currentValue) {
+        currentValue.remove();
+      });
       renderPicturesMiniatures();
-    }, 7000);
+    }, DEBOUNCE_INTERVAL);
   };
 
   filtersForm.addEventListener('click', onFilterButtonClick);
