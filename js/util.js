@@ -16,25 +16,10 @@
       }
     },
 
-    getRndProperty: function (arr) {
-      var rndIndex = window.util.getRandomInteger(0, arr.length - 1);
-      return arr[rndIndex];
-    },
-
     clearNodeContent: function (nodeToClear) {
       while (nodeToClear.firstChild) {
         nodeToClear.removeChild(nodeToClear.firstChild);
       }
-    },
-
-    shuffleArray: function (array) {
-      for (var i = array.length - 1; i > 0; i--) {
-        var randomIndex = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[randomIndex];
-        array[randomIndex] = temp;
-      }
-      return array;
     },
 
     showError: function (errorMessage) {

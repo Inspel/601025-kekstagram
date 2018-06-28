@@ -87,7 +87,9 @@
       new: {
         quantity: 10,
         sortedData: (function () {
-          return window.util.shuffleArray(rawData.slice());
+          return rawData.slice().sort(function() {
+            return 0.5 - Math.random();
+          });
         })()
       },
 
@@ -95,10 +97,10 @@
         sortedData: (function () {
           return rawData.slice().sort(function (left, right) {
             if (left.comments.length > right.comments.length) {
-              return 1;
+              return -1;
             }
             if (left.comments.length < right.comments.length) {
-              return -1;
+              return 1;
             }
             return 0;
           });
@@ -121,29 +123,30 @@
 
   // Обработчик нажатий на кнопки фильтров
   var filtersForm = filtersNode.querySelector('.img-filters__form');
-  var filterButtons = filtersForm.querySelectorAll('.img-filters__button');
+  var activeButton = filtersNode.querySelector('.img-filters__button--active');
+
   var onFilterButtonClick = function (event) {
-    filterButtons.forEach(function (currentValue) {
-      currentValue.classList.remove('img-filters__button--active');
-    });
 
-    var activeButton = event.target;
-    activeButton.classList.add('img-filters__button--active');
+    if (activeButton !== event.target) {
+      activeButton.classList.remove('img-filters__button--active');
+      activeButton = event.target;
+      activeButton.classList.add('img-filters__button--active');
 
-    var activeFilterName = activeButton.getAttribute('id').slice(7);
-    activeFilter = pictureFilter[activeFilterName];
+      var activeFilterName = activeButton.getAttribute('id').slice(7);
+      activeFilter = pictureFilter[activeFilterName];
 
-    var DEBOUNCE_INTERVAL = 500; // ms
-    var lastTimeout;
-    if (lastTimeout) {
-      window.clearTimeout(lastTimeout);
+      var DEBOUNCE_INTERVAL = 500; // ms
+      var lastTimeout = null;
+      if (lastTimeout) {
+        window.clearTimeout(lastTimeout);
+      }
+      window.setTimeout(function () {
+        picturesImages.forEach(function (currentValue) {
+          currentValue.remove();
+        });
+        renderPicturesMiniatures();
+      }, DEBOUNCE_INTERVAL);
     }
-    window.setTimeout(function () {
-      picturesImages.forEach(function (currentValue) {
-        currentValue.remove();
-      });
-      renderPicturesMiniatures();
-    }, DEBOUNCE_INTERVAL);
   };
 
   filtersForm.addEventListener('click', onFilterButtonClick);
