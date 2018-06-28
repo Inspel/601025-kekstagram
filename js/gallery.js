@@ -120,19 +120,18 @@
 
   window.backend.load(onLoadSuccess, onLoadError);
 
-
   // Обработчик нажатий на кнопки фильтров
   var filtersForm = filtersNode.querySelector('.img-filters__form');
   var activeButton = filtersNode.querySelector('.img-filters__button--active');
 
   var onFilterButtonClick = function (event) {
 
-    if (activeButton !== event.target) {
+    if (event.target.type === 'button' && activeButton !== event.target) {
       activeButton.classList.remove('img-filters__button--active');
       activeButton = event.target;
       activeButton.classList.add('img-filters__button--active');
 
-      var activeFilterName = activeButton.getAttribute('id').slice(7);
+      var activeFilterName = activeButton.getAttribute('id').slice('filter-'.length);
       activeFilter = pictureFilter[activeFilterName];
 
       var DEBOUNCE_INTERVAL = 500; // ms
