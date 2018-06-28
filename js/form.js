@@ -70,6 +70,7 @@
     activeEffect = effects[defaultEffect];
     addFilter(defaultEffect);
     setScaleValueDefault();
+    window.resize();
     imgUploadOverlay.classList.remove('hidden');
     document.addEventListener('keydown', onUploadOverlayEscPress);
   };
