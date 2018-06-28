@@ -14,28 +14,31 @@
 
   resizeInput.removeAttribute('value');
 
+  var value;
+
   window.resize = function () {
-    resizeInput.value = RESIZE_MAX;
+    value = RESIZE_MAX;
     activateResize();
   };
 
   var activateResize = function () {
-    previewImage.style.transform = 'scale(' + resizeInput.value * 0.01 + ')';
+    previewImage.style.transform = 'scale(' + value * 0.01 + ')';
+    resizeInput.value = value + '%';
   };
 
 
   var resizeButtonMinus = resizeFieldset.querySelector('.resize__control--minus');
   var onResizeMinusClick = function () {
-    if (resizeInput.value > RESIZE_MIN) {
-      resizeInput.value -= RESIZE_SHIFT;
+    if (value > RESIZE_MIN) {
+      value -= RESIZE_SHIFT;
       activateResize();
     }
   };
 
   var resizeButtonPlus = resizeFieldset.querySelector('.resize__control--plus');
   var onResizePlusClick = function () {
-    if (resizeInput.value < RESIZE_MAX) {
-      resizeInput.value = parseInt(resizeInput.value, 10) + RESIZE_SHIFT;
+    if (value < RESIZE_MAX) {
+      value += RESIZE_SHIFT;
       activateResize();
     }
   };
