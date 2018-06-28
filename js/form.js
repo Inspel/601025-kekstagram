@@ -65,6 +65,7 @@
   })();
 
   var imgUploadOverlay = document.querySelector('.img-upload__overlay');
+  var previewImageUpload = fileForm.querySelector('.img-upload__input');
   var uploadOverlayOpen = function () {
     previewImage.removeAttribute('style');
     activeEffect = effects[defaultEffect];
@@ -73,6 +74,7 @@
     window.resize();
     imgUploadOverlay.classList.remove('hidden');
     document.addEventListener('keydown', onUploadOverlayEscPress);
+    previewImage.src = URL.createObjectURL(previewImageUpload.files[0]);
   };
 
   var uploadOverlayClose = function () {
