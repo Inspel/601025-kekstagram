@@ -16,20 +16,19 @@
       });
       array.forEach(function (item) {
         picturesNode.appendChild(item);
+        item.classList.remove('hidden');
       });
-      for (var i = 10; i < nodes.length; i++) {
-        nodes[i].classList.remove('hidden');
-      }
     },
 
     new: function (data, nodes) {
+      var NEW_COUNT = 10;
       var array = [].slice.call(nodes).sort(function () {
         return Math.random() - 0.5;
       });
       array.forEach(function (item) {
         picturesNode.appendChild(item);
       });
-      for (var i = 10; i < nodes.length; i++) {
+      for (var i = NEW_COUNT; i < nodes.length; i++) {
         nodes[i].classList.add('hidden');
       }
     },
@@ -48,10 +47,8 @@
       });
       array.forEach(function (item) {
         picturesNode.appendChild(item);
+        item.classList.remove('hidden');
       });
-      for (var i = 10; i < nodes.length; i++) {
-        nodes[i].classList.remove('hidden');
-      }
     }
   };
 
