@@ -87,7 +87,7 @@
       new: {
         quantity: 10,
         sortedData: (function () {
-          return rawData.slice().sort(function() {
+          return rawData.slice().sort(function () {
             return 0.5 - Math.random();
           });
         })()
