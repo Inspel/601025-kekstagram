@@ -35,9 +35,6 @@
 
   var fileForm = document.querySelector('.img-upload__form');
   var effectScale = fileForm.querySelector('.img-upload__scale');
-  var scaleLine = effectScale.querySelector('.scale__line');
-  var scalePin = effectScale.querySelector('.scale__pin');
-  var scaleLevel = effectScale.querySelector('.scale__level');
 
   var scaleInput = fileForm.querySelector('.scale__value');
   scaleInput.removeAttribute('value');
@@ -47,6 +44,9 @@
     previewImage.className = 'effects__preview--' + filter;
   };
 
+  var scaleLine = effectScale.querySelector('.scale__line');
+  var scalePin = effectScale.querySelector('.scale__pin');
+  var scaleLevel = effectScale.querySelector('.scale__level');
   var setScaleValueDefault = function () {
     scalePin.style.left = MAX_SCALE + 'px';
     scaleLevel.style.width = MAX_SCALE + 'px';
@@ -159,6 +159,7 @@
     document.addEventListener('mouseup', onScalePinMouseup);
   });
 
+  // Комментарий
   var bigPictureText = document.querySelector('.img-upload__text');
   var hashtagInput = bigPictureText.querySelector('.text__hashtags');
 
@@ -172,7 +173,6 @@
     document.addEventListener('keydown', onUploadOverlayEscPress);
   });
 
-  // Комментарий
   var descriptionInput = bigPictureText.querySelector('.text__description');
 
   descriptionInput.addEventListener('focus', function () {
