@@ -16,16 +16,12 @@
       }
     },
 
-    getRndProperty: function (arr) {
-      var rndIndex = window.util.getRandomInteger(0, arr.length - 1);
-      return arr[rndIndex];
-    },
-
     clearNodeContent: function (nodeToClear) {
       while (nodeToClear.firstChild) {
         nodeToClear.removeChild(nodeToClear.firstChild);
       }
     },
+
     showError: function (errorMessage) {
       var overlayNode = document.createElement('div');
       overlayNode.classList.add('error-overlay', 'overlay');
