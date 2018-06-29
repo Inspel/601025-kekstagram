@@ -188,9 +188,13 @@
     setScaleValueDefault();
   };
 
-  var onUploadError = function (errorMessage) {
+  var template = document.querySelector('#picture');
+  var uploadErrorTemplate = template.content.querySelector('.error');
+  var onUploadError = function () {
     uploadOverlayClose();
-    window.util.showError(errorMessage);
+    var uploadErrorElement = uploadErrorTemplate.cloneNode(true);
+    document.body.appendChild(uploadErrorElement);
+    uploadErrorElement.classList.remove('hidden');
   };
 
   fileForm.addEventListener('submit', function (event) {

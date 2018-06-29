@@ -6,10 +6,10 @@
 
   // Рендер миниатюр
   var pictureTemplate = document.querySelector('#picture');
-
   var galleryData;
+
+  var template = pictureTemplate.content.querySelector('.picture__link');
   var createSimilarPicturesFragment = function () {
-    var template = pictureTemplate.content.querySelector('.picture__link');
     var fragment = document.createDocumentFragment();
 
     for (var i = 0; i < galleryData.length; i++) {
