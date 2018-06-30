@@ -5,7 +5,9 @@
   var util = window.util;
   var MAX_COMMENTS = 5;
 
+  // Создание шаблона для комментария
   var pictureTemplate = document.querySelector('#picture');
+
   var commentTemplateElement = (function () {
     var commentTemplate = document.createElement('template');
     commentTemplate.id = 'comments';
@@ -15,9 +17,10 @@
     return commentTemplate;
   })();
 
-
+  // Создание фрагмента с комментариями
   var bigPicturePreview = document.querySelector('.big-picture__preview');
   var commentsList = bigPicturePreview.querySelector('.social__comments');
+
   var createBigPictureCommentsFragment = function (activePictureObject) {
     util.clearNodeContent(commentsList);
     var bigPictureCommentsTemplate = commentTemplateElement.querySelector('.social__comment');
@@ -36,14 +39,17 @@
     return fragment;
   };
 
+  // Заполнение блока полноэкранного изображения контентом
   var bigPictureImg = bigPicturePreview.querySelector('.big-picture__img img');
   var bigPictureDescription = bigPicturePreview.querySelector('.social__caption');
   var bigPictureLikes = bigPicturePreview.querySelector('.likes-count');
   var bigPictureCommentsQuantity = bigPicturePreview.querySelector('.comments-count');
 
-  window.renderBigPicture = function (activeElement) {
+  window.renderBigPicture = function (activeElement, array) {
     var activeIndex = activeElement.getAttribute('index');
-    var activePictureObject = window.gallery[activeIndex];
+
+    var activePictureObject = array[activeIndex];
+
     bigPictureImg.src = activeElement.src;
     bigPictureDescription.textContent = activePictureObject.description;
     bigPictureLikes.textContent = activePictureObject.likes;

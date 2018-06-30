@@ -35,9 +35,6 @@
 
   var fileForm = document.querySelector('.img-upload__form');
   var effectScale = fileForm.querySelector('.img-upload__scale');
-  var scaleLine = effectScale.querySelector('.scale__line');
-  var scalePin = effectScale.querySelector('.scale__pin');
-  var scaleLevel = effectScale.querySelector('.scale__level');
 
   var scaleInput = fileForm.querySelector('.scale__value');
   scaleInput.removeAttribute('value');
@@ -47,6 +44,9 @@
     previewImage.className = 'effects__preview--' + filter;
   };
 
+  var scaleLine = effectScale.querySelector('.scale__line');
+  var scalePin = effectScale.querySelector('.scale__pin');
+  var scaleLevel = effectScale.querySelector('.scale__level');
   var setScaleValueDefault = function () {
     scalePin.style.left = MAX_SCALE + 'px';
     scaleLevel.style.width = MAX_SCALE + 'px';
@@ -65,13 +65,16 @@
   })();
 
   var imgUploadOverlay = document.querySelector('.img-upload__overlay');
+  var previewImageUpload = fileForm.querySelector('.img-upload__input');
   var uploadOverlayOpen = function () {
     previewImage.removeAttribute('style');
     activeEffect = effects[defaultEffect];
     addFilter(defaultEffect);
     setScaleValueDefault();
+    window.resize();
     imgUploadOverlay.classList.remove('hidden');
     document.addEventListener('keydown', onUploadOverlayEscPress);
+    previewImage.src = URL.createObjectURL(previewImageUpload.files[0]);
   };
 
   var uploadOverlayClose = function () {
@@ -156,6 +159,7 @@
     document.addEventListener('mouseup', onScalePinMouseup);
   });
 
+  // Комментарий
   var bigPictureText = document.querySelector('.img-upload__text');
   var hashtagInput = bigPictureText.querySelector('.text__hashtags');
 
@@ -169,7 +173,6 @@
     document.addEventListener('keydown', onUploadOverlayEscPress);
   });
 
-  // Комментарий
   var descriptionInput = bigPictureText.querySelector('.text__description');
 
   descriptionInput.addEventListener('focus', function () {
@@ -185,9 +188,13 @@
     setScaleValueDefault();
   };
 
-  var onUploadError = function (errorMessage) {
+  var template = document.querySelector('#picture');
+  var uploadErrorTemplate = template.content.querySelector('.error');
+  var onUploadError = function () {
     uploadOverlayClose();
-    window.util.showError(errorMessage);
+    var uploadErrorElement = uploadErrorTemplate.cloneNode(true);
+    document.body.appendChild(uploadErrorElement);
+    uploadErrorElement.classList.remove('hidden');
   };
 
   fileForm.addEventListener('submit', function (event) {
