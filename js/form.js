@@ -87,11 +87,16 @@
     util.isEscEvent(event, uploadOverlayClose);
   };
 
-  var uploadFile = fileForm.elements['filename'];
-  uploadFile.addEventListener('change', uploadOverlayOpen);
+  var uploadFileInput = fileForm.elements['filename'];
+  uploadFileInput.addEventListener('change', uploadOverlayOpen);
 
   var uploadCancelButton = document.querySelector('.img-upload__cancel');
   uploadCancelButton.addEventListener('click', uploadOverlayClose);
+
+  window.form = {
+    uploadOverlayClose: uploadOverlayClose,
+    setScaleValueDefault: setScaleValueDefault
+  };
 
   // Выбор активного эффекта
   var activeEffect;
@@ -180,25 +185,5 @@
   });
   descriptionInput.addEventListener('blur', function () {
     document.addEventListener('keydown', onUploadOverlayEscPress);
-  });
-
-  // Отправление данных формы
-  var onUploadSuccess = function () {
-    uploadOverlayClose();
-    setScaleValueDefault();
-  };
-
-  var template = document.querySelector('#picture');
-  var uploadErrorTemplate = template.content.querySelector('.error');
-  var onUploadError = function () {
-    uploadOverlayClose();
-    var uploadErrorElement = uploadErrorTemplate.cloneNode(true);
-    document.body.appendChild(uploadErrorElement);
-    uploadErrorElement.classList.remove('hidden');
-  };
-
-  fileForm.addEventListener('submit', function (event) {
-    window.backend.upload(new FormData(fileForm), onUploadSuccess, onUploadError);
-    event.preventDefault();
   });
 })();
