@@ -5,14 +5,13 @@
   var RESIZE_MAX = 100;
   var RESIZE_MIN = 25;
   var RESIZE_SHIFT = 25;
+  var SCALE_VALUE_FACTOR = 0.01;
 
   var resizeFieldset = document.querySelector('.img-upload__resize');
 
   var previewImage = document.querySelector('.img-upload__preview img');
 
   var resizeInput = resizeFieldset.querySelector('.resize__control--value');
-
-  resizeInput.removeAttribute('value');
 
   var value;
 
@@ -22,7 +21,7 @@
   };
 
   var activateResize = function () {
-    previewImage.style.transform = 'scale(' + value * 0.01 + ')';
+    previewImage.style.transform = 'scale(' + value * SCALE_VALUE_FACTOR + ')';
     resizeInput.value = value + '%';
   };
 

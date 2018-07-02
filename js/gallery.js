@@ -18,7 +18,7 @@
 
       img.src = galleryData[i].url;
       var index = i.toString();
-      img.setAttribute('index', index);
+      img.setAttribute('data-index', index);
       pictureElement.querySelector('.picture__stat--comments').textContent = galleryData[i].comments.length;
       pictureElement.querySelector('.picture__stat--likes').textContent = galleryData[i].likes;
       fragment.appendChild(pictureElement);

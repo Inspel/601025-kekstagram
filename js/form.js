@@ -88,10 +88,14 @@
   };
 
   var uploadFileInput = fileForm.elements['filename'];
-  uploadFileInput.addEventListener('change', uploadOverlayOpen);
+  uploadFileInput.addEventListener('change', function () {
+    uploadOverlayOpen();
+  });
 
   var uploadCancelButton = document.querySelector('.img-upload__cancel');
-  uploadCancelButton.addEventListener('click', uploadOverlayClose);
+  uploadCancelButton.addEventListener('click', function () {
+    uploadOverlayClose();
+  });
 
   window.form = {
     uploadOverlayClose: uploadOverlayClose,

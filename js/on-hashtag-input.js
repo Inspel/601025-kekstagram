@@ -2,6 +2,9 @@
 // Хэштеги и комментарий
 // Хэштеги
 (function () {
+  var HASH_SYMBOL = '#';
+  var HASHTAG_MAX_LENGTH = 20;
+  var HASHTAG_MAX_COUNT = 5;
 
   window.onHashtagInput = function (event) {
     var target = event.target;
@@ -10,7 +13,7 @@
 
     var testFirstHash = function () {
       for (var i = 0; i < hashtagsArray.length; i++) {
-        if (hashtagsArray[i][0] !== '#' && hashtagsArray[i][0] !== undefined) {
+        if (hashtagsArray[i][0] !== HASH_SYMBOL && hashtagsArray[i][0] !== undefined) {
           return i + 1;
         }
       }
@@ -19,7 +22,7 @@
 
     var testHashtagContent = function () {
       for (var i = 0; i < hashtagsArray.length; i++) {
-        if (hashtagsArray[i] === '#') {
+        if (hashtagsArray[i] === HASH_SYMBOL) {
           return i + 1;
         }
       }
@@ -28,7 +31,7 @@
 
     var testHashtagLength = function () {
       for (var i = 0; i < hashtagsArray.length; i++) {
-        if (hashtagsArray[i].length > 20) {
+        if (hashtagsArray[i].length > HASHTAG_MAX_LENGTH) {
           return i + 1;
         }
       }
@@ -64,7 +67,7 @@
         target.setCustomValidity('Пусть все хэштеги будут разными!');
         break;
 
-      case hashtagsArray.length <= 5:
+      case hashtagsArray.length <= HASHTAG_MAX_COUNT:
         target.setCustomValidity('Не больше 5 хэштегов');
         break;
 

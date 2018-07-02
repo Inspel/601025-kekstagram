@@ -3,27 +3,32 @@
 (function () {
   var LOAD_URL = 'https://js.dump.academy/kekstagram/data';
   var UPLOAD_URL = 'https://js.dump.academy/kekstagram';
+  var TIMEOUT = 5000;
+  var SUCCESS_CODE = 200;
+  var BAD_REQUEST_CODE = 400;
+  var UNAUTORIZED_CODE = 401;
+  var NOT_FOUND_CODE = 404;
 
   var manageXhr = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
-    xhr.timeout = 5000;
+    xhr.timeout = TIMEOUT;
     xhr.addEventListener('load', function () {
       var error;
       switch (xhr.status) {
-        case 200:
+        case SUCCESS_CODE:
           onLoad(xhr.response);
           break;
 
-        case 400:
+        case BAD_REQUEST_CODE:
           error = 'Что-то пошло не так, неверный запрос';
           break;
 
-        case 401:
+        case UNAUTORIZED_CODE:
           error = 'Что-то пошло не так, пользователь не авторизован';
           break;
 
-        case 404:
+        case NOT_FOUND_CODE:
           error = 'Что-то пошло не так, ничего не найдено';
           break;
 

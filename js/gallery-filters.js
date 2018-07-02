@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var NEW_COUNT = 10;
+  var DEBOUNCE_INTERVAL = 500;
+
   var picturesNode = document.querySelector('.pictures');
   var filtersNode = document.querySelector('.img-filters');
 
@@ -12,7 +15,7 @@
   var pictureFilter = {
     popular: function (data, nodes) {
       var array = [].slice.call(nodes).sort(function (left, right) {
-        return left.firstElementChild.getAttribute('index') - right.firstElementChild.getAttribute('index');
+        return left.firstElementChild.getAttribute('data-index') - right.firstElementChild.getAttribute('data-index');
       });
       array.forEach(function (item) {
         picturesNode.appendChild(item);
@@ -21,7 +24,6 @@
     },
 
     new: function (data, nodes) {
-      var NEW_COUNT = 10;
       var array = [].slice.call(nodes).sort(function () {
         return Math.random() - 0.5;
       });
@@ -39,11 +41,11 @@
       var leftData;
       var rightData;
       var array = [].slice.call(nodes).sort(function (left, right) {
-        leftIndex = parseInt(left.firstElementChild.getAttribute('index'), 10);
-        rightIndex = parseInt(right.firstElementChild.getAttribute('index'), 10);
+        leftIndex = parseInt(left.firstElementChild.getAttribute('data-index'), 10);
+        rightIndex = parseInt(right.firstElementChild.getAttribute('data-index'), 10);
         leftData = data[leftIndex];
         rightData = data[rightIndex];
-        return leftData.comments.length - rightData.comments.length;
+        return rightData.comments.length - leftData.comments.length;
       });
       array.forEach(function (item) {
         picturesNode.appendChild(item);
@@ -70,7 +72,6 @@
         var activeFilterName = activeButton.getAttribute('id').slice('filter-'.length);
         activeFilter = pictureFilter[activeFilterName];
 
-        var DEBOUNCE_INTERVAL = 500; // ms
         var lastTimeout = null;
         if (lastTimeout) {
           window.clearTimeout(lastTimeout);
