@@ -6,7 +6,7 @@
   var TIMEOUT = 5000;
   var SUCCESS_CODE = 200;
   var BAD_REQUEST_CODE = 400;
-  var UNAUTORIZED_CODE = 401;
+  var UNAUTHORIZED_CODE = 401;
   var NOT_FOUND_CODE = 404;
 
   var manageXhr = function (onLoad, onError) {
@@ -24,7 +24,7 @@
           error = 'Что-то пошло не так, неверный запрос';
           break;
 
-        case UNAUTORIZED_CODE:
+        case UNAUTHORIZED_CODE:
           error = 'Что-то пошло не так, пользователь не авторизован';
           break;
 

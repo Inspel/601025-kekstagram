@@ -1,69 +1,45 @@
 'use strict';
-// Хэштеги и комментарий
 // Хэштеги
 (function () {
   var HASH_SYMBOL = '#';
   var HASHTAG_MAX_LENGTH = 20;
   var HASHTAG_MAX_COUNT = 5;
 
+  var hashErrorCount;
+  var setErrorCount = function (index) {
+    hashErrorCount = index + 1;
+  };
+
   window.onHashtagInput = function (event) {
     var target = event.target;
-    var hashtagsArray = target.value.split(/\s/);
-
-
-    var testFirstHash = function () {
-      for (var i = 0; i < hashtagsArray.length; i++) {
-        if (hashtagsArray[i][0] !== HASH_SYMBOL && hashtagsArray[i][0] !== undefined) {
-          return i + 1;
-        }
-      }
-      return true;
-    };
-
-    var testHashtagContent = function () {
-      for (var i = 0; i < hashtagsArray.length; i++) {
-        if (hashtagsArray[i] === HASH_SYMBOL) {
-          return i + 1;
-        }
-      }
-      return true;
-    };
-
-    var testHashtagLength = function () {
-      for (var i = 0; i < hashtagsArray.length; i++) {
-        if (hashtagsArray[i].length > HASHTAG_MAX_LENGTH) {
-          return i + 1;
-        }
-      }
-      return true;
-    };
-
-    var testSimilarHashtags = function () {
-      var currentHashtag = hashtagsArray[0];
-      for (var i = 1; i < hashtagsArray.length; i++) {
-        if (hashtagsArray[i].toUpperCase() === currentHashtag.toUpperCase()) {
-          return false;
-        }
-        currentHashtag = hashtagsArray[i];
-      }
-      return true;
-    };
+    var hashtagsArray = target.value.split(' ');
 
     switch (false) {
 
-      case typeof testFirstHash() === 'boolean':
-        target.setCustomValidity('Начни ' + testFirstHash() + '-й хэштег с решетки!');
+      case hashtagsArray.every(function (currentValue, index) {
+        setErrorCount(index);
+        return currentValue[0] === HASH_SYMBOL || currentValue[0] === undefined;
+      }):
+        target.setCustomValidity('Начни ' + hashErrorCount + '-й хэштег с решетки!');
         break;
 
-      case typeof testHashtagContent() === 'boolean':
-        target.setCustomValidity('У хэштэга ' + testHashtagContent() + ' решетка очень одинока!');
+      case hashtagsArray.every(function (currentValue, index) {
+        setErrorCount(index);
+        return currentValue !== HASH_SYMBOL;
+      }):
+        target.setCustomValidity('У хэштэга ' + hashErrorCount + ' решетка очень одинока!');
         break;
 
-      case typeof testHashtagLength() === 'boolean':
-        target.setCustomValidity(testHashtagLength() + '-й хэштег слишком длинный');
+      case hashtagsArray.some(function (currentValue, index) {
+        setErrorCount(index);
+        return currentValue.length <= HASHTAG_MAX_LENGTH;
+      }):
+        target.setCustomValidity(hashErrorCount + '-й хэштег слишком длинный');
         break;
 
-      case testSimilarHashtags():
+      case hashtagsArray.every(function (currentValue, index, array) {
+        return array.lastIndexOf(currentValue) === index;
+      }):
         target.setCustomValidity('Пусть все хэштеги будут разными!');
         break;
 

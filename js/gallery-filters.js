@@ -3,9 +3,10 @@
 (function () {
   var NEW_COUNT = 10;
   var DEBOUNCE_INTERVAL = 500;
+  var RANDOM_CORRECTION_NUMBER = 0.5;
 
-  var picturesNode = document.querySelector('.pictures');
-  var filtersNode = document.querySelector('.img-filters');
+  var picturesNode = window.gallery.picturesNode;
+  var filtersNode = window.gallery.filtersNode;
 
   var filtersForm = filtersNode.querySelector('.img-filters__form');
   var activeButton = filtersNode.querySelector('.img-filters__button--active');
@@ -25,7 +26,7 @@
 
     new: function (data, nodes) {
       var array = [].slice.call(nodes).sort(function () {
-        return Math.random() - 0.5;
+        return Math.random() - RANDOM_CORRECTION_NUMBER;
       });
       array.forEach(function (item) {
         picturesNode.appendChild(item);

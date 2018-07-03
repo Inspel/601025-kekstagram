@@ -3,6 +3,7 @@
 (function () {
 
   var util = window.util;
+  var picturesNode = document.querySelector('.pictures');
 
   // Рендер миниатюр
   var pictureTemplate = document.querySelector('#picture');
@@ -34,7 +35,7 @@
 
   var picturesImages;
   var addPicturesListeners = function () {
-    picturesImages = document.querySelectorAll('.picture__link');
+    picturesImages = picturesNode.querySelectorAll('.picture__link');
     picturesImages.forEach(function (currentValue, i) {
       currentValue.addEventListener('click', function () {
         openBigPicture(picturesImages[i]);
@@ -43,7 +44,6 @@
   };
 
   // Получение данных и запуск рендера
-  var picturesNode = document.querySelector('.pictures');
   var filtersNode = document.querySelector('.img-filters');
   var onLoadSuccess = function (data) {
     galleryData = data;
@@ -71,7 +71,7 @@
 
   // Закрытие полноэкранного изображения
   var closeBigPicture = function () {
-    document.body.removeAttribute('modal-open');
+    document.body.removeAttribute('class');
     bigPictureNode.classList.add('hidden');
     document.removeEventListener('keydown', onBigPictureEscPress);
   };
@@ -90,5 +90,11 @@
   bigPictureCommentInput.addEventListener('blur', function () {
     document.addEventListener('keydown', onBigPictureEscPress);
   });
+
+  window.gallery = {
+    picturesNode: picturesNode,
+    bigPictureNode: bigPictureNode,
+    filtersNode: filtersNode
+  };
 
 })();

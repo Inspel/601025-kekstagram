@@ -2,10 +2,11 @@
 
 (function () {
   var ESC_KEYCODE = 27;
+  var RANDOM_CORRECTION_NUMBER = 1;
 
   window.util = {
     getRandomInteger: function (min, max) {
-      var random = min + Math.random() * (max + 1 - min);
+      var random = min + Math.random() * (max + RANDOM_CORRECTION_NUMBER - min);
       random = Math.floor(random);
       return random;
     },

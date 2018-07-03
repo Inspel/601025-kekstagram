@@ -2,7 +2,8 @@
 
 (function () {
   var MAX_VISIBLE_COMMENTS = 5;
-  var VISIBLE_COMMENT_QUANTITY_STRING = ' из ';
+  var AVATAR_NUMBER_MIN = 1;
+  var AVATAR_NUMBER_MAX = 6;
   var util = window.util;
 
   // Создание шаблона для комментария
@@ -31,7 +32,7 @@
     for (var i = 0; i < commentsQuantity; i++) {
       var newBigPictureComment = bigPictureCommentsTemplate.cloneNode(true);
 
-      newBigPictureComment.querySelector('.social__picture').src = 'img/avatar-' + util.getRandomInteger(1, 6) + '.svg';
+      newBigPictureComment.querySelector('.social__picture').src = 'img/avatar-' + util.getRandomInteger(AVATAR_NUMBER_MIN, AVATAR_NUMBER_MAX) + '.svg';
       newBigPictureComment.querySelector('.social__text').textContent = activePictureObject.comments[i];
 
       fragment.appendChild(newBigPictureComment);
@@ -47,11 +48,13 @@
   var bigPictureDescription = bigPicturePreview.querySelector('.social__caption');
   var bigPictureLikes = bigPicturePreview.querySelector('.likes-count');
   var bigPictureCommentsQuantity = bigPicturePreview.querySelector('.comments-count');
+
   var visibleCommentsQuantity = bigPicturePreview.querySelector('.social__comment-count').firstChild;
   var setVisibleCommentsQuantity = function (quantity) {
-    visibleCommentsQuantity.textContent = quantity + VISIBLE_COMMENT_QUANTITY_STRING;
+    visibleCommentsQuantity.textContent = quantity + ' из ';
   };
 
+  // Обработчик демонстрации скрытых комментариев
   var invisibleCommentsCountFrom;
   var invisibleCommentsCountTo;
   var onLoadCommentsButtonClick = function () {

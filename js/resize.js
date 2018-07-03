@@ -3,13 +3,12 @@
 (function () {
 
   var RESIZE_MAX = 100;
-  var RESIZE_MIN = 25;
   var RESIZE_SHIFT = 25;
   var SCALE_VALUE_FACTOR = 0.01;
 
-  var resizeFieldset = document.querySelector('.img-upload__resize');
+  var resizeFieldset = window.form.fileForm.querySelector('.img-upload__resize');
 
-  var previewImage = document.querySelector('.img-upload__preview img');
+  var previewImage = window.form.previewImage;
 
   var resizeInput = resizeFieldset.querySelector('.resize__control--value');
 
@@ -28,7 +27,7 @@
 
   var resizeButtonMinus = resizeFieldset.querySelector('.resize__control--minus');
   var onResizeMinusClick = function () {
-    if (value > RESIZE_MIN) {
+    if (value > RESIZE_SHIFT) {
       value -= RESIZE_SHIFT;
       activateResize();
     }

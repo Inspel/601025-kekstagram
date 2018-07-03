@@ -19,7 +19,7 @@
 
   var onUploadSuccess = function () {
     window.form.uploadOverlayClose();
-    window.form.setScaleValueDefault();
+    window.slider();
   };
 
   fileForm.addEventListener('submit', function (event) {
