@@ -70,7 +70,7 @@
         activeButton = event.target;
         activeButton.classList.add('img-filters__button--active');
 
-        var activeFilterName = activeButton.getAttribute('id').slice('filter-'.length);
+        var activeFilterName = activeButton.id.slice('filter-'.length);
         activeFilter = pictureFilter[activeFilterName];
 
         var lastTimeout = null;
