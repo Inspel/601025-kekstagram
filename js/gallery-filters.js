@@ -16,7 +16,7 @@
   var pictureFilter = {
     popular: function (data, nodes) {
       var array = [].slice.call(nodes).sort(function (left, right) {
-        return left.firstElementChild.getAttribute('data-index') - right.firstElementChild.getAttribute('data-index');
+        return left.firstElementChild.index - right.firstElementChild.index;
       });
       array.forEach(function (item) {
         picturesNode.appendChild(item);
@@ -42,8 +42,8 @@
       var leftData;
       var rightData;
       var array = [].slice.call(nodes).sort(function (left, right) {
-        leftIndex = parseInt(left.firstElementChild.getAttribute('data-index'), 10);
-        rightIndex = parseInt(right.firstElementChild.getAttribute('data-index'), 10);
+        leftIndex = parseInt(left.firstElementChild.index, 10);
+        rightIndex = parseInt(right.firstElementChild.index, 10);
         leftData = data[leftIndex];
         rightData = data[rightIndex];
         return rightData.comments.length - leftData.comments.length;

@@ -9,8 +9,6 @@
   var effectScale = fileForm.querySelector('.img-upload__scale');
 
   var scaleInput = fileForm.querySelector('.scale__value');
-  scaleInput.removeAttribute('value');
-
 
   var scaleLine = effectScale.querySelector('.scale__line');
   var scalePin = effectScale.querySelector('.scale__pin');

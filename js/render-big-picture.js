@@ -71,7 +71,7 @@
   };
 
   window.renderBigPicture = function (activeElement, array) {
-    var activeIndex = activeElement.getAttribute('data-index');
+    var activeIndex = activeElement.index;
     var activePictureObject = array[activeIndex];
 
     bigPictureImg.src = activeElement.src;
