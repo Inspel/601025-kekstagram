@@ -4,6 +4,8 @@
   var MAX_SCALE = 453;
   var MAX_SCALE_VALUE = '100';
   var SCALE_KEYBOARD_SHIFT = 1;
+  var LEFT_KEYCODE = 37;
+  var RIGHT_KEYCODE = 39;
 
   var fileForm = window.form.fileForm;
   var effectScale = fileForm.querySelector('.img-upload__scale');
@@ -64,11 +66,11 @@
     scalePinLeftValue = parseInt(scalePin.style.left, 10);
 
     switch (true) {
-      case event.keyCode === 37:
+      case event.keyCode === LEFT_KEYCODE:
         scalePinLeftValue -= SCALE_KEYBOARD_SHIFT;
         break;
 
-      case event.keyCode === 39:
+      case event.keyCode === RIGHT_KEYCODE:
         scalePinLeftValue += SCALE_KEYBOARD_SHIFT;
         break;
 
