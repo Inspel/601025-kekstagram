@@ -10,31 +10,26 @@
 
       case testedArray.length <= HASHTAG_MAX_COUNT:
         return 'Не больше 5 хэштегов';
-        break;
 
       case testedArray.every(function (currentValue) {
         return currentValue[0] === HASH_SYMBOL || currentValue[0] === undefined;
       }):
         return 'Начни все хэштеги с решетки!';
-        break;
 
       case testedArray.every(function (currentValue) {
         return currentValue !== HASH_SYMBOL;
       }):
         return 'Решетка очень одинока!';
-        break;
 
       case testedArray.some(function (currentValue) {
         return currentValue.length <= HASHTAG_MAX_LENGTH;
       }):
         return 'Хэштегам не надо быть длиннее 20 символов';
-        break;
 
       case testedArray.every(function (currentValue, index, array) {
         return array.lastIndexOf(currentValue) === index;
       }):
         return 'Пусть все хэштеги будут разными!';
-        break;
 
       default:
         return '';
