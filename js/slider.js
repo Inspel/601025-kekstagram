@@ -23,7 +23,6 @@
   };
 
   // Перемещение пина и обработка его положения
-
   var setScaleValue = function () {
     var scalePinLeft = parseInt(scalePin.style.left, 10);
     scaleInput.value = Math.round(scalePinLeft * MAX_SCALE_VALUE / MAX_SCALE);

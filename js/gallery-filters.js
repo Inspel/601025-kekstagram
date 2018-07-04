@@ -60,7 +60,6 @@
   };
 
   // Обработчик нажатий на кнопки фильтров
-
   window.galleryFilters = function (galleryData, picturesImages) {
 
     var onFilterButtonClick = function (event) {

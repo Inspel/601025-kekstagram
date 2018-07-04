@@ -4,7 +4,6 @@
   var PERCENT_DIVIDER = 100;
 
   // Форма редактирования фотографий
-
   var effects = {
     chrome: {
       filter: 'grayscale',
@@ -99,7 +98,6 @@
   });
 
   // Перемещение пина и обработка его положения
-
   var effectDepth;
   var getEffectDepth = function () {
     var effectMaxValue = activeEffect.maxValue;
@@ -118,7 +116,6 @@
     fileForm: fileForm,
     previewImage: previewImage,
     uploadOverlayClose: uploadOverlayClose,
-
     activateFilter: function () {
       getEffectDepth();
       setEffectDepth();
