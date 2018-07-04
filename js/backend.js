@@ -49,7 +49,6 @@
     return xhr;
   };
 
-
   window.backend = {
     upload: function (data, onLoad, onError) {
 

@@ -24,7 +24,6 @@
     resizeInput.value = value + '%';
   };
 
-
   var resizeButtonMinus = resizeFieldset.querySelector('.resize__control--minus');
   var onResizeMinusClick = function () {
     if (value > RESIZE_SHIFT) {

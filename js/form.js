@@ -125,7 +125,7 @@
     }
   };
 
-  // Комментарий
+  // Хэштеги и комментарий
   var bigPictureText = imgUploadOverlay.querySelector('.img-upload__text');
   var hashtagInput = bigPictureText.querySelector('.text__hashtags');
 
